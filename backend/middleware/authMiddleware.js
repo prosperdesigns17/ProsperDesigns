@@ -16,11 +16,12 @@ const protect = async (req, res, next) => {
 
   try {
     // Decode token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const jwtSecret = process.env.JWT_SECRET || 'super_secret_jwt_key_please_change';
+    const decoded = jwt.verify(token, jwtSecret);
 
     // Attach admin to request
     if (decoded.id === 'env_admin') {
-      req.admin = { username: process.env.ADMIN_USERNAME };
+      req.admin = { username: process.env.ADMIN_USERNAME || 'Prosperdesign' };
     } else {
       req.admin = await Admin.findById(decoded.id).select('-password');
     }
