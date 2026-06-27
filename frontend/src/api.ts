@@ -1,7 +1,12 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://prosperdesigns.onrender.com/api';
+let rawUrl = import.meta.env.VITE_API_URL || 'https://prosper-designs-vqzf-hvtyd3jh4-prosperdesign.vercel.app/api';
+if (!rawUrl.endsWith('/api') && !rawUrl.endsWith('/api/')) {
+  rawUrl = rawUrl.replace(/\/$/, '') + '/api';
+}
+
+const API_BASE_URL = rawUrl;
 
 const API = axios.create({ 
   baseURL: API_BASE_URL,
