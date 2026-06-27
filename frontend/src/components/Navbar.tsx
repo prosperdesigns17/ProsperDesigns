@@ -29,18 +29,9 @@ export default function Navbar() {
           className="cursor-pointer flex items-center gap-3" 
           onClick={() => scrollToSection('home')}
         >
-          <img 
-            src="/logo.png" 
-            alt="Prosper Design" 
-            className="h-14 md:h-16 w-auto object-contain rounded-lg shadow-md" 
-            onError={(e) => {
-              (e.target as HTMLElement).style.display = 'none';
-              const span = document.createElement('span');
-              span.className = 'text-2xl font-bold text-white tracking-widest uppercase';
-              span.innerHTML = 'Prosper<span class="text-[#d4af37]">.</span>';
-              (e.target as HTMLElement).parentNode?.appendChild(span);
-            }}
-          />
+          <span className="text-2xl md:text-3xl font-bold uppercase tracking-widest select-none">
+            <span className="text-white">PROSPER</span><span className="text-[#d4af37]">.</span>
+          </span>
         </div>
 
         {/* Desktop Menu */}

@@ -1,4 +1,4 @@
-﻿// ── Static config for the public Services gallery page ───────────────────
+// ── Static config for the public Services gallery page ───────────────────
 // Images are served from /public folder (Vite static assets).
 // This file is the source of truth for the public-facing portfolio browser.
 // The Admin panel uses the MongoDB backend separately.
@@ -365,4 +365,78 @@ export const servicesConfig: ParentService[] = [
       },
     ],
   },
+
+  /* ═══════════════════════════════════════════════════════════════
+     SERVICES & MAINTENANCE
+  ═══════════════════════════════════════════════════════════════ */
+  {
+    title: 'Services & Maintenance',
+    coverImage: '/services & maintenance/Fountain servicing1.jpeg',
+    subServices: [
+      {
+        title: 'EPDM Flooring Maintenance',
+        coverImage: '/services & maintenance/Edpm flooring maintenance 1.jpeg',
+        description: 'Professional maintenance and repair services for EPDM rubber flooring in playgrounds, gyms, and sports areas. Keeping your surfaces safe, vibrant, and long-lasting.',
+        features: ['Surface Repair', 'Colour Restoration', 'Sealing & Coating', 'Safety Inspection'],
+        gallery: [
+          { image: '/services & maintenance/Edpm flooring maintenance 1.jpeg', title: 'EPDM Flooring Maintenance 1', description: 'Professional repair and restoration of EPDM rubber flooring surfaces.' },
+          { image: '/services & maintenance/Edpm flooring maintenance 2.jpeg', title: 'EPDM Flooring Maintenance 2', description: 'Colour restoration and sealing for long-lasting EPDM flooring.' },
+        ],
+      },
+      {
+        title: 'Fountain Servicing',
+        coverImage: '/services & maintenance/Fountain servicing1.jpeg',
+        description: 'Complete servicing and maintenance of water fountains and decorative water features. We ensure pumps, filters, and structures remain in perfect condition year-round.',
+        features: ['Pump Servicing', 'Filter Cleaning', 'Leak Repairs', 'Water Treatment'],
+        gallery: [
+          { image: '/services & maintenance/Fountain servicing1.jpeg', title: 'Fountain Servicing 1', description: 'Complete pump and filtration servicing for water fountains.' },
+          { image: '/services & maintenance/Fountain servicing2.jpeg', title: 'Fountain Servicing 2', description: 'Structural inspection and leak repairs for decorative water features.' },
+          { image: '/services & maintenance/Fountain servicing3.jpeg', title: 'Fountain Servicing 3', description: 'Water treatment and maintenance for clean, pristine fountains.' },
+        ],
+      },
+      {
+        title: 'Interior Servicing',
+        coverImage: '/services & maintenance/interior servicing 1.jpeg',
+        description: 'Comprehensive interior maintenance services to keep your spaces looking their best. From touch-up painting and woodwork repairs to deep cleaning and fixture servicing.',
+        features: ['Touch-up Painting', 'Woodwork Repair', 'Fixture Servicing', 'Deep Cleaning'],
+        gallery: [
+          { image: '/services & maintenance/interior servicing 1.jpeg', title: 'Interior Servicing 1', description: 'Comprehensive interior maintenance keeping spaces pristine.' },
+          { image: '/services & maintenance/Interior servicing 2.jpeg', title: 'Interior Servicing 2', description: 'Touch-up painting and woodwork repairs for interiors.' },
+          { image: '/services & maintenance/Interior servicing 3.jpeg', title: 'Interior Servicing 3', description: 'Fixture servicing and deep cleaning for premium spaces.' },
+          { image: '/services & maintenance/interior servicing 4.jpeg', title: 'Interior Servicing 4', description: 'Full interior upkeep and restoration services.' },
+        ],
+      },
+      {
+        title: 'Landscape Servicing',
+        coverImage: '/services & maintenance/landscape servicing 1.jpeg',
+        description: 'Regular landscape maintenance to keep gardens, lawns, and outdoor spaces in peak condition. Trimming, pruning, fertilizing, and seasonal care for your landscape.',
+        features: ['Lawn Mowing', 'Pruning & Trimming', 'Fertilizing', 'Seasonal Care'],
+        gallery: [
+          { image: '/services & maintenance/landscape servicing 1.jpeg', title: 'Landscape Servicing 1', description: 'Regular garden and lawn maintenance for pristine outdoor spaces.' },
+          { image: '/services & maintenance/landscape servicing 2.jpeg', title: 'Landscape Servicing 2', description: 'Pruning, trimming and fertilizing for healthy landscapes.' },
+        ],
+      },
+      {
+        title: 'Playstation Servicing',
+        coverImage: '/services & maintenance/playstation servicing1.jpeg',
+        description: 'Safety inspections, equipment repairs, and surface maintenance for playgrounds and recreational facilities. Ensuring every play area remains safe and enjoyable.',
+        features: ['Safety Inspection', 'Equipment Repair', 'Surface Resurfacing', 'Compliance Checks'],
+        gallery: [
+          { image: '/services & maintenance/playstation servicing1.jpeg', title: 'Playstation Servicing 1', description: 'Safety inspections and equipment repairs for play areas.' },
+          { image: '/services & maintenance/playstation servicing2.jpeg', title: 'Playstation Servicing 2', description: 'Surface resurfacing and compliance checks for recreational facilities.' },
+        ],
+      },
+      {
+        title: 'Swimming Pool Servicing',
+        coverImage: '/services & maintenance/swimming pool servicing1.jpeg',
+        description: 'Full-service swimming pool maintenance including water chemistry balancing, filter cleaning, tile scrubbing, and equipment inspections for crystal-clear pools all year.',
+        features: ['Water Chemistry', 'Filter Cleaning', 'Tile Scrubbing', 'Equipment Inspection'],
+        gallery: [
+          { image: '/services & maintenance/swimming pool servicing1.jpeg', title: 'Swimming Pool Servicing 1', description: 'Water chemistry balancing and filter cleaning for crystal-clear pools.' },
+          { image: '/services & maintenance/swimming pool servicing2.jpeg', title: 'Swimming Pool Servicing 2', description: 'Tile scrubbing and equipment inspection for pool maintenance.' },
+        ],
+      },
+    ],
+  },
 ];
+

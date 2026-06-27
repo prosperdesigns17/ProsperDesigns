@@ -198,8 +198,9 @@ export default function BookConsultation() {
                   <option value="Landscape">Landscape</option>
                   <option value="Water Bodies">Water Bodies</option>
                   <option value="Playstation">Playstation</option>
+                  <option value="Services & Maintenance">Services &amp; Maintenance</option>
                   {/* Keep custom parent options if admin adds others */}
-                  {projectType && !['Constructions', 'Interior Design', 'Landscape', 'Water Bodies', 'Playstation'].includes(projectType) && (
+                  {projectType && !['Constructions', 'Interior Design', 'Landscape', 'Water Bodies', 'Playstation', 'Services & Maintenance'].includes(projectType) && (
                     <option value={projectType}>{projectType}</option>
                   )}
                 </select>

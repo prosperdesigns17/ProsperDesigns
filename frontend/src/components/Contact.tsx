@@ -97,9 +97,12 @@ export default function Contact() {
                 className="w-44 md:w-52 h-auto object-contain mb-6 rounded-xl shadow-lg border border-white/10" 
               />
               <h3 className="text-[#d4af37] uppercase tracking-widest text-sm font-bold mb-3">Contact</h3>
-              <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-widest mb-10 text-[#d4af37]">
+              <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-[#d4af37] whitespace-nowrap mb-1">
                 RAM BABU MIRYALA
               </h2>
+              <p className="text-sm md:text-base uppercase tracking-widest font-semibold text-[#d4af37] mb-10">
+                Designer
+              </p>
             </div>
             
             <div className="space-y-8">

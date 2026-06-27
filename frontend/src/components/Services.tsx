@@ -9,13 +9,23 @@ import ServiceDetail from './services/ServiceDetail';
 
 type Level = 'parents' | 'children' | 'detail';
 
-const getOrderIndex = (title: string) => {
+const ORDER: Record<string, number> = {
+  interior: 0,
+  exterior: 1,
+  landscaping: 1,
+  pool: 2,
+  fountain: 2,
+  play: 3,
+  construction: 4,
+  maintenance: 5,
+  services: 5,
+};
+
+const getOrderIndex = (title: string): number => {
   const normalized = title.toLowerCase();
-  if (normalized.includes('interior')) return 0;
-  if (normalized.includes('exterior') || normalized.includes('landscaping')) return 1;
-  if (normalized.includes('pool') || normalized.includes('fountain')) return 2;
-  if (normalized.includes('play')) return 3;
-  if (normalized.includes('construction')) return 4;
+  for (const [key, index] of Object.entries(ORDER)) {
+    if (normalized.includes(key)) return index;
+  }
   return 999;
 };
 
@@ -33,20 +43,14 @@ const mapStaticToDbFormat = (): Service[] => {
       gallery: sub.gallery
         .filter((img) => {
           const name = img.image.split('/').pop()?.toLowerCase() || '';
-          return ![
-            "cover.jpg",
-            "cover.jpeg",
-            "cover.png",
-            "cover.webp",
-            "cover.avif"
-          ].includes(name);
+          return !['cover.jpg', 'cover.jpeg', 'cover.png', 'cover.webp', 'cover.avif'].includes(name);
         })
         .map((img) => ({
           url: img.image,
           caption: img.title,
-          description: img.description || ''
-        }))
-    }))
+          description: img.description || '',
+        })),
+    })),
   }));
 };
 
@@ -75,7 +79,7 @@ export default function Services() {
           setServices(mapped);
         }
       } catch (err) {
-        console.error("Failed to fetch database services, falling back to static config.", err);
+        console.error('Failed to fetch database services, falling back to static config.', err);
         const mapped = mapStaticToDbFormat();
         mapped.sort((a, b) => getOrderIndex(a.title) - getOrderIndex(b.title));
         setServices(mapped);
@@ -123,30 +127,28 @@ export default function Services() {
 
   return (
     <section ref={sectionRef} id="services" className="bg-[#2A3F5C] text-white relative">
-      {/* Section Header — visible above the pinned scroll area */}
-      <div className="container mx-auto px-6 md:px-12 py-16 md:py-24 lg:hidden">
-        <div className="max-w-2xl">
-          <h3 className="text-[#d4af37] uppercase tracking-widest text-sm font-bold mb-4">Our Expertise</h3>
-          <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-wider mb-6">Services</h2>
-          <p className="text-gray-300 font-light text-lg">
-            Explore our curated, luxury portfolio of custom craftsmanship.
-          </p>
-        </div>
-      </div>
-
       <AnimatePresence mode="wait">
         {level === 'parents' && (
-          <ParentGrid
-            parents={services}
-            onSelect={handleParentSelect}
-            sectionRef={sectionRef}
-            cardWidth={900}
-            gap={60}
-          />
+          <div className="container mx-auto px-6 md:px-12 py-16 md:py-24">
+            {/* Section Header */}
+            <div className="max-w-2xl mb-12">
+              <h3 className="text-[#d4af37] uppercase tracking-widest text-sm font-bold mb-4">Our Expertise</h3>
+              <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-wider mb-6">Services</h2>
+              <p className="text-gray-300 font-light text-lg">
+                Explore our curated, luxury portfolio of custom craftsmanship.
+              </p>
+            </div>
+
+            <ParentGrid
+              parents={services}
+              onSelect={handleParentSelect}
+              sectionRef={sectionRef}
+            />
+          </div>
         )}
 
         {level === 'children' && selectedParent && (
-          <div className="container mx-auto px-6 md:px-12">
+          <div className="container mx-auto px-6 md:px-12 py-16 md:py-24">
             <ChildGrid
               parent={selectedParent}
               onBack={handleBackToParents}
@@ -156,7 +158,7 @@ export default function Services() {
         )}
 
         {level === 'detail' && selectedParent && selectedChild && (
-          <div className="container mx-auto px-6 md:px-12">
+          <div className="container mx-auto px-6 md:px-12 py-16 md:py-24">
             <ServiceDetail
               parent={selectedParent}
               child={selectedChild}
