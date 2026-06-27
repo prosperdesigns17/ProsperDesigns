@@ -1,24 +1,13 @@
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
 
-let rawUrl = import.meta.env.VITE_API_URL || 'https://prosper-designs-vqzf-hvtyd3jh4-prosperdesign.vercel.app/api';
-if (!rawUrl.endsWith('/api') && !rawUrl.endsWith('/api/')) {
-  rawUrl = rawUrl.replace(/\/$/, '') + '/api';
-}
-
-const API_BASE_URL = rawUrl;
+const envUrl = import.meta.env.VITE_API_URL || 'https://prosper-designs-vqzf-hvtyd3jh4-prosperdesign.vercel.app';
+const cleanUrl = envUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+const API_BASE_URL = `${cleanUrl}/api`;
 
 const API = axios.create({ 
   baseURL: API_BASE_URL,
-  withCredentials: true 
-});
-
-// Add retry support for failed requests (e.g. transient network errors)
-axiosRetry(API, {
-  retries: 3,
-  retryDelay: axiosRetry.exponentialDelay,
-  retryCondition: (error) => {
-    return axiosRetry.isNetworkOrIdempotentRequestError(error) || (error.response?.status ?? 0) >= 500;
+  headers: {
+    'Content-Type': 'application/json'
   }
 });
 
@@ -46,8 +35,7 @@ API.interceptors.response.use(
 );
 
 export const getBackendUrl = () => {
-  return API_BASE_URL.replace(/\/api$/, '');
+  return cleanUrl;
 };
 
 export default API;
-
