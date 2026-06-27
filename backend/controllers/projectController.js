@@ -5,7 +5,30 @@ const { uploadImage, uploadVideo } = require('../services/cloudinaryService');
 // @desc    Get all projects
 // @route   GET /api/projects
 const getProjects = asyncHandler(async (req, res) => {
-  const rawProjects = await Project.find().sort({ createdAt: -1 });
+  let rawProjects = await Project.find().sort({ createdAt: -1 });
+
+  if (rawProjects.length === 0) {
+    const defaultProjects = [
+      {
+        title: "ROYAL PALACE ESTATE",
+        description: "A sprawling luxury estate featuring modern architectural finishes, custom glass facades, and landscaped infinity pools.",
+        category: "Architecture & Interiors",
+        coverImage: "/project-main-cover.jpg",
+        thumbnail: "/project-main-cover.jpg",
+        galleryImages: ["/project-main-cover.jpg"],
+        images: ["/project-main-cover.jpg"],
+        visibility: true,
+        featured: true
+      }
+    ];
+    try {
+      await Project.insertMany(defaultProjects);
+      rawProjects = await Project.find().sort({ createdAt: -1 });
+    } catch (e) {
+      console.error("Auto-seed projects failed:", e.message);
+    }
+  }
+
   const projects = rawProjects.map((p) => {
     const obj = p.toObject();
     const cover = obj.coverImage || obj.thumbnail || '';

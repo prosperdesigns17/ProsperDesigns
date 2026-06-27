@@ -25,10 +25,10 @@ export interface ParentService {
 
 export const servicesConfig: ParentService[] = [
   /* ═══════════════════════════════════════════════════════════════
-     INTERIOR DESIGNING
+     1. INTERIORS
   ═══════════════════════════════════════════════════════════════ */
   {
-    title: 'Interior Designing',
+    title: 'Interiors',
     coverImage: '/InteriorDesigning/cover.jpg',
     subServices: [
       {
@@ -98,85 +98,92 @@ export const servicesConfig: ParentService[] = [
         description: 'Dazzling, glamorous interiors inspired by old Hollywood. Think mirrored surfaces, velvet upholstery, and dramatic statement pieces.',
         features: ['Mirrored Accents', 'Velvet Upholstery', 'Crystal Chandeliers', 'Bold Contrasts'],
         gallery: [
-          { image: '/InteriorDesigning/Hollywood Glam Interior/Cover.jpeg', title: 'Hollywood Glam', description: 'Dazzling Hollywood-inspired glamour with mirrored surfaces and rich velvet.' },
+          { image: '/InteriorDesigning/Hollywood Glam Interior/Cover.jpeg', title: 'Hollywood Glam Interior', description: 'Dramatic, shimmering interior with plush finishes.' },
         ],
       },
       {
         title: 'Home & Furniture Collection',
-        coverImage: '/InteriorDesigning/Home& Furniture collection/Cover.jpeg',
-        description: 'Curated furniture collections that blend form and function. From minimalist pieces to grand statement furniture, every item is selected for impact.',
-        features: ['Custom Upholstery', 'Solid Wood Crafts', 'Designer Pieces', 'Space Optimized'],
+        coverImage: '/InteriorDesigning/Home & Furniture Collection/Cover.jpeg',
+        description: 'Bespoke furniture pieces tailored to your exact aesthetic and dimensions. Handcrafted sofas, tables, cabinets, and custom joinery.',
+        features: ['Custom Joinery', 'Premium Leathers & Fabrics', 'Ergonomic Crafting', 'Statement Tables'],
         gallery: [
-          { image: '/InteriorDesigning/Home& Furniture collection/minimalistic furniture design.jpeg', title: 'Minimalistic Furniture', description: 'Clean lines, neutral tones, and highly functional furniture design.' },
-          { image: '/InteriorDesigning/Home& Furniture collection/maximalistic furniture design.jpeg', title: 'Maximalistic Furniture', description: 'Vibrant, detailed, and rich premium furniture accents.' },
-          { image: '/InteriorDesigning/Home& Furniture collection/Empire style furniture design.jpeg', title: 'Empire Style Furniture', description: 'Classical and opulent wood furniture detailing.' },
-          { image: '/InteriorDesigning/Home& Furniture collection/Mission-Style Furniture.jpeg', title: 'Mission-Style Furniture', description: 'Solid wood craft emphasizing simplicity and horizontal lines.' },
+          { image: '/InteriorDesigning/Home & Furniture Collection/Center Coffee Table Design.jpeg', title: 'Center Coffee Table', description: 'Bespoke central coffee table with luxury materials.' },
+          { image: '/InteriorDesigning/Home & Furniture Collection/Living Dining Room partition design.jpeg', title: 'Living Dining Partition', description: 'Aesthetic room divider separating living and dining zones.' },
+          { image: '/InteriorDesigning/Home & Furniture Collection/Shoe rack design.jpeg', title: 'Custom Shoe Rack', description: 'Organized, ventilated, and concealed shoe storage furniture.' },
+          { image: '/InteriorDesigning/Home & Furniture Collection/Tv Cabinet design.jpeg', title: 'TV Cabinet Console', description: 'Modern entertainment center with hidden cable management.' },
         ],
       },
       {
         title: 'Industrial Interior',
         coverImage: '/InteriorDesigning/Industrial Interior/Cover.jpeg',
-        description: 'Raw, edgy, and beautifully unfinished. Industrial interiors celebrate exposed brick, metal beams and concrete textures for a bold urban look.',
-        features: ['Exposed Brick', 'Metal Accents', 'Concrete Textures', 'Open Ductwork'],
+        description: 'Exposed brick, steel beams, and raw concrete textures blended into sophisticated urban living spaces.',
+        features: ['Exposed Brick', 'Metal Accents', 'Reclaimed Wood', 'Open Ducting'],
         gallery: [
-          { image: '/InteriorDesigning/Industrial Interior/Cover.jpeg', title: 'Industrial Interior', description: 'Raw urban aesthetic with exposed brick, metal and concrete textures.' },
+          { image: '/InteriorDesigning/Industrial Interior/Cover.jpeg', title: 'Industrial Interior', description: 'Urban loft style featuring raw steel and weathered brick textures.' },
         ],
       },
       {
         title: 'Luxury Hotel Style',
         coverImage: '/InteriorDesigning/Luxury Hotel Style/Cover.jpeg',
-        description: 'Five-star hotel aesthetics brought into residential and commercial spaces. Premium materials, impeccable service design, and refined elegance.',
-        features: ['5-Star Aesthetics', 'Premium Materials', 'Spa-Like Bathrooms', 'Curated Artwork'],
+        description: 'Bring five-star resort elegance into residential projects. Opulent suites, spa bathrooms, and grand dining areas.',
+        features: ['Resort Amenities', 'Spa Bathrooms', 'Opulent Lighting', 'Custom Drapery'],
         gallery: [
-          { image: '/InteriorDesigning/Luxury Hotel Style/Cover.jpeg', title: 'Luxury Hotel Style', description: 'Five-star hotel aesthetics for residential and commercial spaces.' },
+          { image: '/InteriorDesigning/Luxury Hotel Style/Cover.jpeg', title: 'Luxury Hotel Suite', description: 'Five-star hotel suite atmosphere with high-end furnishings.' },
         ],
       },
       {
         title: 'Luxury Modern Interior',
         coverImage: '/InteriorDesigning/Luxury Modern Interior/Cover.jpeg',
-        description: 'The pinnacle of contemporary luxury. Seamlessly blending modern minimalism with opulent materials for spaces that truly impress.',
-        features: ['Marble Finishes', 'Smart Home Integration', 'Designer Lighting', 'Bespoke Joinery'],
+        description: 'High-end contemporary design highlighting premium marble, rich wood veneers, and integrated smart home systems.',
+        features: ['Marble Surfaces', 'Smart Automation', 'Custom Millwork', 'Designer Lighting'],
         gallery: [
-          { image: '/InteriorDesigning/Luxury Modern Interior/Cover.jpeg', title: 'Luxury Modern Interior', description: 'Contemporary luxury with marble, smart tech and bespoke finishes.' },
+          { image: '/InteriorDesigning/Luxury Modern Interior/Luxury Modern Interior1.jpeg', title: 'Luxury Modern Living', description: 'Spacious living room with marble feature walls.' },
+          { image: '/InteriorDesigning/Luxury Modern Interior/Luxury Modern Interior2.jpeg', title: 'Luxury Modern Lounge', description: 'Warm ambient lighting and tailored seating.' },
+          { image: '/InteriorDesigning/Luxury Modern Interior/Luxury Modern Interior3.jpeg', title: 'Luxury Modern Suite', description: 'Refined modern suite showcasing high craftsmanship.' },
         ],
       },
       {
         title: 'Mid-Century Modern',
         coverImage: '/InteriorDesigning/Mid-Century Modern/Cover.jpeg',
-        description: 'Celebrating the design revolution of the 1950s-60s. Clean organic forms, functional furniture, and a playful mix of traditional and non-traditional materials.',
-        features: ['Organic Forms', 'Teak Wood', 'Retro Colour Pops', 'Functional Beauty'],
+        description: 'Retro 1950s functionality meets organic shapes. Teak wood, tapered legs, and iconic furniture silhouettes.',
+        features: ['Teak Woodwork', 'Organic Silhouettes', 'Bold Accent Colors', 'Tapered Furniture Legs'],
         gallery: [
-          { image: '/InteriorDesigning/Mid-Century Modern/Cover.jpeg', title: 'Mid-Century Modern', description: 'Iconic 1950s-60s design with organic forms and functional elegance.' },
+          { image: '/InteriorDesigning/Mid-Century Modern/Mid-Century Modern1.jpeg', title: 'Mid-Century Living', description: 'Iconic mid-century furniture and warm teak tones.' },
+          { image: '/InteriorDesigning/Mid-Century Modern/Mid-Century Modern2.jpeg', title: 'Mid-Century Dining', description: 'Clean lines and retro dining setup.' },
+          { image: '/InteriorDesigning/Mid-Century Modern/Mid-Century Modern3.jpeg', title: 'Mid-Century Nook', description: 'Cozy lounge nook with vintage aesthetics.' },
         ],
       },
       {
         title: 'Minimalist Interior',
         coverImage: '/InteriorDesigning/Minimalist Interior/Cover.jpeg',
-        description: 'Less is more. Minimalist interiors focus on clean lines, uncluttered spaces, and a neutral palette that lets the architecture speak for itself.',
-        features: ['Monochrome Palettes', 'Hidden Storage', 'Natural Light', 'Clean Geometry'],
+        description: 'Essentialism in architectural form. Uncluttered environments emphasizing spatial geometry, light, and silence.',
+        features: ['Concealed Storage', 'Monochromatic Palette', 'Seamless Surfaces', 'Natural Light Focus'],
         gallery: [
-          { image: '/InteriorDesigning/Minimalist Interior/Cover.jpeg', title: 'Minimalist Interior', description: 'Serene uncluttered spaces with clean geometry and natural light.' },
+          { image: '/InteriorDesigning/Minimalist Interior/Minimalist Interior1.jpeg', title: 'Minimalist Hallway', description: 'Pure geometric lines and serene light filtering.' },
+          { image: '/InteriorDesigning/Minimalist Interior/Minimalist Interior2.jpeg', title: 'Minimalist Living', description: 'Uncluttered space focusing on texture and form.' },
+          { image: '/InteriorDesigning/Minimalist Interior/Minimalist Interior3.jpeg', title: 'Minimalist Bedroom', description: 'Restful minimalist bedroom free of distraction.' },
         ],
       },
       {
         title: 'Modern Interior Design',
         coverImage: '/InteriorDesigning/Modern Interior Design/Cover.jpeg',
-        description: 'A perfect balance of style and practicality. Modern interiors use the latest materials and trends to create spaces that are both beautiful and livable.',
-        features: ['Contemporary Styling', 'Multi-functional Spaces', 'Tech Integration', 'Premium Finishes'],
+        description: 'Sleek, current, and functional design tailored for urban lifestyle standards.',
+        features: ['Sleek Profiles', 'Functional Zoning', 'Glass Accents', 'Integrated Storage'],
         gallery: [
-          { image: '/InteriorDesigning/Modern Interior Design/Cover.jpeg', title: 'Modern Interior Design', description: 'Contemporary and practical spaces with the latest materials and trends.' },
+          { image: '/InteriorDesigning/Modern Interior Design/Modern Interior Design1.jpeg', title: 'Modern Living Space', description: 'Clean functional layout with modern decor.' },
+          { image: '/InteriorDesigning/Modern Interior Design/Modern Interior Design2.jpeg', title: 'Modern Lounge', description: 'Comfortable and contemporary seating environment.' },
         ],
       },
       {
         title: 'Modern Kitchen Designing',
-        coverImage: '/InteriorDesigning/Modern Kitchen designing/cover.jpeg',
-        description: 'Modular kitchens designed for the modern chef. Ergonomic layouts, premium appliances, and beautiful finishes for your most-used room.',
-        features: ['Modular Cabinets', 'Quartz Countertops', 'Smart Storage', 'Premium Appliances'],
+        coverImage: '/InteriorDesigning/Modern Kitchen designing/Cover.jpeg',
+        description: 'State-of-the-art modular kitchens featuring handleless cabinetry, stone countertops, and smart appliances.',
+        features: ['Modular Storage', 'Quartz Countertops', 'Built-in Appliances', 'Ergonomic Work Triangle'],
         gallery: [
-          { image: '/InteriorDesigning/Modern Kitchen designing/L-Shaped Modular Kitchen Layout.jpeg', title: 'L-Shaped Modular Kitchen', description: 'Efficient layout maximizing corner utility and workflow.' },
-          { image: '/InteriorDesigning/Modern Kitchen designing/Open  Kitchen Layout.jpeg', title: 'Open Kitchen Layout', description: 'Modern open kitchen integrated beautifully with the dining space.' },
-          { image: '/InteriorDesigning/Modern Kitchen designing/Parallel Shaped Modular Kitchen Layout.jpeg', title: 'Parallel Shaped Kitchen', description: 'Dual platform design optimizing counter space for cooking enthusiasts.' },
-          { image: '/InteriorDesigning/Modern Kitchen designing/Straight Modular Kitchen Layout.jpeg', title: 'Straight Modular Kitchen', description: 'Compact and streamlined modular kitchen layout.' },
+          { image: '/InteriorDesigning/Modern Kitchen designing/L-Shaped Modular Kitchen Layout.jpeg', title: 'L-Shaped Kitchen', description: 'Efficient L-shaped counter flow for compact and open spaces.' },
+          { image: '/InteriorDesigning/Modern Kitchen designing/Open  Kitchen Layout.jpeg', title: 'Open Concept Kitchen', description: 'Seamless kitchen transition into the living/dining area.' },
+          { image: '/InteriorDesigning/Modern Kitchen designing/Parallel Shaped Modular Kitchen Layout.jpeg', title: 'Parallel Modular Kitchen', description: 'Dual counter layout optimizing chef movement and prep space.' },
+          { image: '/InteriorDesigning/Modern Kitchen designing/Straight Modular Kitchen Layout.jpeg', title: 'Straight Kitchen', description: 'Sleek single-wall kitchen layout ideal for modern apartments.' },
           { image: '/InteriorDesigning/Modern Kitchen designing/U-Shaped Modular Kitchen Layout.jpeg', title: 'U-Shaped Modular Kitchen', description: 'Maximum counter space and storage wrap-around kitchen design.' },
         ],
       },
@@ -186,7 +193,9 @@ export const servicesConfig: ParentService[] = [
         description: 'Nordic simplicity at its finest. Functional, cosy and beautifully understated design celebrating natural materials, light and hygge.',
         features: ['Hygge Aesthetics', 'Natural Wood', 'Soft Textiles', 'Neutral Tones'],
         gallery: [
-          { image: '/InteriorDesigning/Scandinavian Design/Cover.jpeg', title: 'Scandinavian Design', description: 'Nordic simplicity with natural wood, soft textiles and neutral tones.' },
+          { image: '/InteriorDesigning/Scandinavian Design/Scandinavian Design1.jpeg', title: 'Nordic Living', description: 'Nordic simplicity with natural wood and neutral tones.' },
+          { image: '/InteriorDesigning/Scandinavian Design/Scandinavian Design2.jpeg', title: 'Scandinavian Lounge', description: 'Cozy textiles and airy natural lighting.' },
+          { image: '/InteriorDesigning/Scandinavian Design/Scandinavian Design3.jpeg', title: 'Nordic Nook', description: 'Understated hygge lounge area.' },
         ],
       },
       {
@@ -195,7 +204,10 @@ export const servicesConfig: ParentService[] = [
         description: 'Rich cultural heritage expressed through vibrant colours, intricate carvings, and traditional craftsmanship. A celebration of India\'s design legacy.',
         features: ['Handcrafted Woodwork', 'Vibrant Textiles', 'Brass Accents', 'Ethnic Patterns'],
         gallery: [
-          { image: '/InteriorDesigning/Traditional Indian Interior/Cover.jpeg', title: 'Traditional Indian Interior', description: 'Rich Indian heritage with handcrafted woodwork, vibrant textiles and brass accents.' },
+          { image: '/InteriorDesigning/Traditional Indian Interior/Traditional Indian Interior1.jpeg', title: 'Heritage Living Room', description: 'Rich Indian heritage with handcrafted woodwork and brass accents.' },
+          { image: '/InteriorDesigning/Traditional Indian Interior/Traditional Indian Interior2.jpeg', title: 'Courtyard Seating', description: 'Traditional jhula and ethnic textile decor.' },
+          { image: '/InteriorDesigning/Traditional Indian Interior/Traditional Indian Interior3.jpeg', title: 'Ornate Foyer', description: 'Intricate wood carving and traditional motif accents.' },
+          { image: '/InteriorDesigning/Traditional Indian Interior/Traditional Indian Interior4.jpeg', title: 'Classic Ethnic Lounge', description: 'Warm color palettes celebrating traditional art.' },
         ],
       },
       {
@@ -204,7 +216,11 @@ export const servicesConfig: ParentService[] = [
         description: 'Grand, ornate and richly decorated. Victorian interiors are characterized by dark wood, heavy fabrics, elaborate patterns, and a sense of aristocratic luxury.',
         features: ['Dark Rich Woods', 'Heavy Drapery', 'Ornate Patterns', 'Marble Fireplaces'],
         gallery: [
-          { image: '/InteriorDesigning/Victorian Interior/Cover.jpeg', title: 'Victorian Interior', description: 'Grand ornate Victorian style with dark woods and elaborate detailing.' },
+          { image: '/InteriorDesigning/Victorian Interior/Victorian Interior1.jpeg', title: 'Victorian Parlor', description: 'Grand ornate Victorian style with dark woods and elaborate detailing.' },
+          { image: '/InteriorDesigning/Victorian Interior/Victorian Interior2.jpeg', title: 'Victorian Study', description: 'Rich wood paneling and classic leather seating.' },
+          { image: '/InteriorDesigning/Victorian Interior/Victorian Interior3.jpeg', title: 'Victorian Suite', description: 'Ornate fireplace and velvet drapery.' },
+          { image: '/InteriorDesigning/Victorian Interior/Victorian Interior4.jpeg', title: 'Victorian Dining', description: 'Aristocratic dining hall setting.' },
+          { image: '/InteriorDesigning/Victorian Interior/Victorian Interior5.jpeg', title: 'Victorian Foyer', description: 'Stately entryway with classic chandeliers.' },
         ],
       },
       {
@@ -222,7 +238,7 @@ export const servicesConfig: ParentService[] = [
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     EXTERIOR & LANDSCAPING
+     2. EXTERIOR & LANDSCAPING
   ═══════════════════════════════════════════════════════════════ */
   {
     title: 'Exterior & Landscaping',
@@ -315,20 +331,6 @@ export const servicesConfig: ParentService[] = [
         ],
       },
       {
-        title: 'Indoor & Outdoor Playstation',
-        coverImage: '/Exterrior & Landscaping/Indoor &outdoor Playstation/Cover.jpeg',
-        description: 'Safe and exciting play environments for children. From indoor soft play zones and climbing walls to outdoor parks and grass tunnels — we build memorable play experiences.',
-        features: ['Safety Certified', 'Age-Appropriate', 'Durable Materials', 'Custom Themes'],
-        gallery: [
-          { image: '/Exterrior & Landscaping/Indoor &outdoor Playstation/Soft Play zone.jpeg', title: 'Soft Play Zone', description: 'Safe indoor foam obstacle and play area for small children.' },
-          { image: '/Exterrior & Landscaping/Indoor &outdoor Playstation/Indoor climbing walls.jpeg', title: 'Indoor Climbing Walls', description: 'Fun adventure walls fitted with safety harness lines.' },
-          { image: '/Exterrior & Landscaping/Indoor &outdoor Playstation/Indoor trampoline parksz.jpeg', title: 'Indoor Trampoline Park', description: 'Wall-to-wall integrated trampoline layouts.' },
-          { image: '/Exterrior & Landscaping/Indoor &outdoor Playstation/Child Park.jpeg', title: 'Child Park', description: 'Complete swings, slides, and outdoor play park design.' },
-          { image: '/Exterrior & Landscaping/Indoor &outdoor Playstation/Outdoor Childs  Park.jpeg', title: 'Outdoor Childs Park', description: 'Premium community outdoor kids amusement layout.' },
-          { image: '/Exterrior & Landscaping/Indoor &outdoor Playstation/Grass tunnel.jpeg', title: 'Grass Tunnel', description: 'Creative organic tunnels for active toddler play.' },
-        ],
-      },
-      {
         title: 'Irrigation',
         coverImage: '/Exterrior & Landscaping/Irrigation/Cover.jpeg',
         description: 'Smart, water-efficient irrigation systems for gardens, sports fields, and large landscapes. We design drip, sprinkler, and micro-spray systems that conserve water while keeping your landscape lush.',
@@ -339,35 +341,111 @@ export const servicesConfig: ParentService[] = [
           { image: '/Exterrior & Landscaping/Irrigation/micro sprinklers.jpeg', title: 'Micro Sprinklers', description: 'Fine spray systems perfect for flowerbeds and groundcover.' },
         ],
       },
+    ],
+  },
+
+  /* ═══════════════════════════════════════════════════════════════
+     3. SWIMMING POOLS & FOUNTAINS
+  ═══════════════════════════════════════════════════════════════ */
+  {
+    title: 'Swimming Pools & Fountains',
+    coverImage: '/Swimming pools &Fountains/Swiming Pools/Cover.jpeg',
+    subServices: [
       {
         title: 'Swimming Pools',
-        coverImage: '/Exterrior & Landscaping/Swiming Pools/Cover.jpeg',
+        coverImage: '/Swimming pools &Fountains/Swiming Pools/Cover.jpeg',
         description: 'From rooftop infinity pools to private indoor sanctuaries, we design and build premium swimming pools with the finest materials and engineering.',
         features: ['Infinity Edge', 'Mosaic Tiling', 'LED Lighting', 'Filtration Systems'],
         gallery: [
-          { image: '/Exterrior & Landscaping/Swiming Pools/Infinity pools.jpeg', title: 'Infinity Pools', description: 'Stunning zero-edge swimming pools merging with the horizon.' },
-          { image: '/Exterrior & Landscaping/Swiming Pools/Indoor pool.jpeg', title: 'Indoor Pool', description: 'Year-round climatized indoor pool designs with wellness options.' },
-          { image: '/Exterrior & Landscaping/Swiming Pools/Rooftop swimming pool.jpeg', title: 'Rooftop Swimming Pool', description: 'Premium architectural rooftop pools with structural reinforcements.' },
-          { image: '/Exterrior & Landscaping/Swiming Pools/On-ground pool.jpeg', title: 'On-Ground Pool', description: 'Semi-permanent surface swimming pools with luxury wood decks.' },
+          { image: '/Swimming pools &Fountains/Swiming Pools/Infinity pools.jpeg', title: 'Infinity Pools', description: 'Stunning zero-edge swimming pools merging with the horizon.' },
+          { image: '/Swimming pools &Fountains/Swiming Pools/Indoor pool.jpeg', title: 'Indoor Pool', description: 'Year-round climatized indoor pool designs with wellness options.' },
+          { image: '/Swimming pools &Fountains/Swiming Pools/Rooftop swimming pool.jpeg', title: 'Rooftop Swimming Pool', description: 'Premium architectural rooftop pools with structural reinforcements.' },
+          { image: '/Swimming pools &Fountains/Swiming Pools/On-ground pool.jpeg', title: 'On-Ground Pool', description: 'Semi-permanent surface swimming pools with luxury wood decks.' },
         ],
       },
       {
-        title: 'Water Bodies',
-        coverImage: '/Exterrior & Landscaping/Water bodies/Cover.jpeg',
-        description: 'Ornamental water features that bring serenity and life to any landscape. Fountains, ponds, waterfalls, and wall features — hand-crafted to perfection.',
-        features: ['Custom Fountains', 'Natural Ponds', 'LED Illumination', 'Low Maintenance'],
+        title: 'Water Fountains',
+        coverImage: '/Swimming pools &Fountains/Fountains/Cover.jpeg',
+        description: 'Ornamental water fountains and architectural water features bringing life and tranquility to luxury estates and public spaces.',
+        features: ['Musical Fountains', 'Dancing Jets', 'Illuminated Cascades', 'Interactive Dry Decks'],
         gallery: [
-          { image: '/Exterrior & Landscaping/Water bodies/tiered fountains.jpeg', title: 'Tiered Fountains', description: 'Elegant multi-level bubbling water fountains.' },
-          { image: '/Exterrior & Landscaping/Water bodies/Disappearing fountain.jpeg', title: 'Disappearing Fountain', description: 'Safe rock-covered reservoir fountains without open pools.' },
-          { image: '/Exterrior & Landscaping/Water bodies/Pond fountain.jpeg', title: 'Pond Fountain', description: 'Aerating fountains designed for garden and fish ponds.' },
-          { image: '/Exterrior & Landscaping/Water bodies/wall fountain.jpeg', title: 'Wall Fountain', description: 'Space-saving vertical wall-hanging water feature.' },
+          { image: '/Swimming pools &Fountains/Fountains/Arch Fountain1.jpeg', title: 'Arch Fountain', description: 'Laminar arching water jets creating elegant watery tunnels.' },
+          { image: '/Swimming pools &Fountains/Fountains/Dancing (Musical) Fountain1.jpeg', title: 'Musical Fountain', description: 'Choreographed water jets moving to music and light rhythms.' },
+          { image: '/Swimming pools &Fountains/Fountains/Dry Deck (Interactive) Fountain1.jpeg', title: 'Dry Deck Fountain', description: 'Interactive ground-level fountain jets safe for foot traffic.' },
+          { image: '/Swimming pools &Fountains/Fountains/Floating Fountain1.jpeg', title: 'Floating Fountain', description: 'Aerating lake and pond fountains with vivid LED lighting.' },
         ],
       },
     ],
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     SERVICES & MAINTENANCE
+     4. PLAYSTATION
+  ═══════════════════════════════════════════════════════════════ */
+  {
+    title: 'Playstation',
+    coverImage: '/Play Station/Indoor &outdoor Playstation/Soft Play zone.jpeg',
+    subServices: [
+      {
+        title: 'Indoor & Outdoor Playstation',
+        coverImage: '/Play Station/Indoor &outdoor Playstation/Soft Play zone.jpeg',
+        description: 'Safe and exciting play environments for children. From indoor soft play zones and climbing walls to outdoor parks and grass tunnels — we build memorable play experiences.',
+        features: ['Safety Certified', 'Age-Appropriate', 'Durable Materials', 'Custom Themes'],
+        gallery: [
+          { image: '/Play Station/Indoor &outdoor Playstation/Soft Play zone.jpeg', title: 'Soft Play Zone', description: 'Safe indoor foam obstacle and play area for small children.' },
+          { image: '/Play Station/Indoor &outdoor Playstation/Indoor climbing walls.jpeg', title: 'Indoor Climbing Walls', description: 'Fun adventure walls fitted with safety harness lines.' },
+          { image: '/Play Station/Indoor &outdoor Playstation/Indoor trampoline parksz.jpeg', title: 'Indoor Trampoline Park', description: 'Wall-to-wall integrated trampoline layouts.' },
+          { image: '/Play Station/Indoor &outdoor Playstation/Child Park.jpeg', title: 'Child Park', description: 'Complete swings, slides, and outdoor play park design.' },
+          { image: '/Play Station/Indoor &outdoor Playstation/Outdoor Childs  Park.jpeg', title: 'Outdoor Childs Park', description: 'Premium community outdoor kids amusement layout.' },
+          { image: '/Play Station/Indoor &outdoor Playstation/Grass tunnel.jpeg', title: 'Grass Tunnel', description: 'Creative organic tunnels for active toddler play.' },
+        ],
+      },
+      {
+        title: 'Jungle Gym',
+        coverImage: '/Play Station/Jungle Gym/Climbing club jungle gym.webp',
+        description: 'Heavy-duty wooden and metal jungle gyms designed for backyard adventures, schools, and community parks.',
+        features: ['Climbing Nets', 'Rope Ladders', 'Slide Attachments', 'Weatherproof Timber'],
+        gallery: [
+          { image: '/Play Station/Jungle Gym/Climbing club jungle gym.webp', title: 'Climbing Club Jungle Gym', description: 'Multi-tiered climbing structure with nets and swings.' },
+          { image: '/Play Station/Jungle Gym/jungel gym1.jpg', title: 'Classic Jungle Gym', description: 'Sturdy wooden frame play structure.' },
+          { image: '/Play Station/Jungle Gym/jungle gym2.webp', title: 'Adventure Play Gym', description: 'Expanded play complex with monkey bars.' },
+        ],
+      },
+      {
+        title: 'Multi Playstation',
+        coverImage: '/Play Station/Multy Playstation/Multi playstation.jpg',
+        description: 'Custom integrated multi-activity play stations offering combined slides, towers, and interactive play panels.',
+        features: ['Integrated Towers', 'Spiral Slides', 'Activity Panels', 'High-Capacity Layouts'],
+        gallery: [
+          { image: '/Play Station/Multy Playstation/Kids Playstation.jpg', title: 'Kids Playstation', description: 'Vibrant outdoor composite multi-play structure.' },
+          { image: '/Play Station/Multy Playstation/Multi playstation.jpg', title: 'Multi Playstation Center', description: 'Large community park play tower complex.' },
+        ],
+      },
+    ],
+  },
+
+  /* ═══════════════════════════════════════════════════════════════
+     5. CONSTRUCTION
+  ═══════════════════════════════════════════════════════════════ */
+  {
+    title: 'Construction',
+    coverImage: '/Construction/cover.jpeg',
+    subServices: [
+      {
+        title: 'Modern House Construction',
+        coverImage: '/Construction/Modern House Construction.jpg',
+        description: 'End-to-end architectural construction solutions for contemporary homes, villas, and modern residential estates.',
+        features: ['Turnkey Execution', 'Structural Warranty', 'Premium Materials', 'Architectural Alignment'],
+        gallery: [
+          { image: '/Construction/Modern House Construction.jpg', title: 'Modern Villa Construction', description: 'Precision concrete and steel construction for modern luxury residences.' },
+          { image: '/Construction/Duplex House construction.avif', title: 'Duplex House Construction', description: 'Multi-level structural engineering and elevation finishing.' },
+          { image: '/Construction/Building Construction.avif', title: 'Building Construction', description: 'Commercial and residential structural framing and civil works.' },
+        ],
+      },
+    ],
+  },
+
+  /* ═══════════════════════════════════════════════════════════════
+     6. SERVICES & MAINTENANCE
   ═══════════════════════════════════════════════════════════════ */
   {
     title: 'Services & Maintenance',
@@ -439,4 +517,3 @@ export const servicesConfig: ParentService[] = [
     ],
   },
 ];
-
