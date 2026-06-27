@@ -54,7 +54,10 @@ const seedClients = async () => {
     console.error('Error seeding clients:', err.message);
   }
 };
-connectDB().then(seedClients);
+(async () => {
+  await connectDB();
+  await seedClients();
+})();
 
 // Ensure upload directories exist
 fs.mkdirSync(path.join(__dirname, 'uploads', 'thumbnails'), { recursive: true });
