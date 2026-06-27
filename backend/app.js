@@ -28,6 +28,12 @@ if (fs.existsSync(localEnvPath)) {
 const Client = require('./models/Client');
 let seeded = false;
 
+const initialClientNames = [
+  "PVR GROUP", "HOTEL - CRAB", "ROYAL ICON", "PVR CLASSIC",
+  "CORNER STONE", "ROYAL RIGHTWAY", "CITY ELITE", "BHAVISHYA HILLS",
+  "SLV", "URBAN MEADOWS", "SKY TOWERS", "ANANDALAHARI", "PRIDE"
+];
+
 const ensureDBAndSeed = async () => {
   await connectDB();
   if (!seeded) {
@@ -35,18 +41,16 @@ const ensureDBAndSeed = async () => {
       const count = await Client.countDocuments();
       if (count === 0) {
         console.log('Seeding initial clients...');
-        const initialClients = [
-          "PVR GROUP", "HOTEL - CRAB", "ROYAL ICON", "PVR CLASSIC",
-          "CORNER STONE", "ROYAL RIGHTWAY", "CITY ELITE", "BHAVISHYA HILLS",
-          "SLV", "URBAN MEADOWS", "SKY TOWERS", "ANANDALAHARI", "PRIDE"
-        ];
-        const docs = initialClients.map((name, index) => ({
+        const docs = initialClientNames.map((name, index) => ({
           name,
           order: index,
           active: true
         }));
         await Client.insertMany(docs);
         console.log('Initial clients seeded successfully!');
+      } else {
+        // Ensure all existing clients have active set to true if undefined
+        await Client.updateMany({ active: { $exists: false } }, { $set: { active: true } });
       }
       seeded = true;
     } catch (err) {
@@ -68,6 +72,9 @@ try {
 
 const app = express();
 
+// Trust reverse proxy for Vercel / Cloudflare rate-limiting
+app.set('trust proxy', 1);
+
 // Middleware to ensure DB connection per request in serverless
 app.use(async (req, res, next) => {
   await ensureDBAndSeed();
@@ -77,7 +84,7 @@ app.use(async (req, res, next) => {
 // Security and Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200,
+  max: 300,
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
@@ -88,27 +95,8 @@ app.use(helmet({
 }));
 app.use(limiter);
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
-  "https://prosper-designs.vercel.app",
-  "https://www.prosper-designs.vercel.app"
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.endsWith(".vercel.app")
-    ) {
-      return callback(null, true);
-    }
-
-    console.log("Blocked Origin:", origin);
-    return callback(new Error("Not allowed by CORS"));
-  },
+  origin: true,
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -124,7 +112,7 @@ app.use(morgan('dev'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Health & Info Routes
-app.get('/', (req, res) => {
+app.get(['/', '/api'], (req, res) => {
   res.json({
     success: true,
     message: "Backend running successfully",
@@ -132,7 +120,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/health', (req, res) => {
+app.get(['/health', '/api/health'], (req, res) => {
   res.json({
     success: true,
     message: "Health OK",
@@ -140,22 +128,35 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({
-    success: true,
-    message: "API Health OK",
-    data: { status: "ok" }
-  });
-});
+// Route Handlers (Support both /api/xxx and /xxx to guarantee no 404 rewrites)
+const authRoutes = require('./routes/authRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+const settingRoutes = require('./routes/settingRoutes');
+const clientRoutes = require('./routes/clientRoutes');
+const testimonialRoutes = require('./routes/testimonialRoutes');
 
-// Route Handlers
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/projects', require('./routes/projectRoutes'));
-app.use('/api/services', require('./routes/serviceRoutes'));
-app.use('/api/messages', require('./routes/messageRoutes'));
-app.use('/api/settings', require('./routes/settingRoutes'));
-app.use('/api/clients', require('./routes/clientRoutes'));
-app.use('/api/testimonials', require('./routes/testimonialRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
+app.use('/api/projects', projectRoutes);
+app.use('/projects', projectRoutes);
+
+app.use('/api/services', serviceRoutes);
+app.use('/services', serviceRoutes);
+
+app.use('/api/messages', messageRoutes);
+app.use('/messages', messageRoutes);
+
+app.use('/api/settings', settingRoutes);
+app.use('/settings', settingRoutes);
+
+app.use('/api/clients', clientRoutes);
+app.use('/clients', clientRoutes);
+
+app.use('/api/testimonials', testimonialRoutes);
+app.use('/testimonials', testimonialRoutes);
 
 // Global Error Handler
 app.use(errorHandler);

@@ -8,12 +8,13 @@ const asyncHandler = require('../middleware/asyncHandler');
 const login = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
-  // 1. Check if login matches environment variables
-  const envUser = process.env.ADMIN_USERNAME;
-  const envPass = process.env.ADMIN_PASSWORD;
+  // 1. Check if login matches environment variables (with default fallbacks)
+  const envUser = process.env.ADMIN_USERNAME || 'Prosperdesign';
+  const envPass = process.env.ADMIN_PASSWORD || 'RamResh@721';
+  const jwtSecret = process.env.JWT_SECRET || 'super_secret_jwt_key_please_change';
 
   if (username === envUser && password === envPass) {
-    const token = jwt.sign({ id: 'env_admin' }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: 'env_admin' }, jwtSecret, {
       expiresIn: '30d',
     });
     return res.json({ success: true, message: 'Login successful', data: { token, username } });
@@ -22,7 +23,7 @@ const login = asyncHandler(async (req, res) => {
   // 2. Alternatively, check MongoDB if we have db admins
   const admin = await Admin.findOne({ username });
   if (admin && (await bcrypt.compare(password, admin.password))) {
-    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: admin._id }, jwtSecret, {
       expiresIn: '30d',
     });
     return res.json({ success: true, message: 'Login successful', data: { token, username: admin.username } });

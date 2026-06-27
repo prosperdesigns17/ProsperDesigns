@@ -6,9 +6,26 @@ const asyncHandler = require('../middleware/asyncHandler');
 const getClients = asyncHandler(async (req, res) => {
   const query = {};
   if (req.query.active === 'true') {
-    query.active = true;
+    query.active = { $ne: false };
   }
-  const clients = await Client.find(query).sort({ order: 1 });
+  let clients = await Client.find(query).sort({ order: 1 });
+
+  // Fallback seed if empty
+  if (clients.length === 0) {
+    const initialClientNames = [
+      "PVR GROUP", "HOTEL - CRAB", "ROYAL ICON", "PVR CLASSIC",
+      "CORNER STONE", "ROYAL RIGHTWAY", "CITY ELITE", "BHAVISHYA HILLS",
+      "SLV", "URBAN MEADOWS", "SKY TOWERS", "ANANDALAHARI", "PRIDE"
+    ];
+    const docs = initialClientNames.map((name, index) => ({ name, order: index, active: true }));
+    try {
+      await Client.insertMany(docs);
+      clients = await Client.find(query).sort({ order: 1 });
+    } catch (e) {
+      console.error('Auto-seed in getClients failed:', e.message);
+    }
+  }
+
   res.json({ success: true, message: 'Clients fetched successfully', data: clients });
 });
 
