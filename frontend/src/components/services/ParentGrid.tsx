@@ -18,7 +18,7 @@ export default function ParentGrid({ parents, onSelect }: ParentGridProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {parents.map((parent, i) => {
           const childCount = parent.children?.length || 0;
           return (

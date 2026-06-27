@@ -9,23 +9,14 @@ import ServiceDetail from './services/ServiceDetail';
 
 type Level = 'parents' | 'children' | 'detail';
 
-const ORDER: Record<string, number> = {
-  interior: 0,
-  exterior: 1,
-  landscaping: 1,
-  pool: 2,
-  fountain: 2,
-  play: 3,
-  construction: 4,
-  maintenance: 5,
-  services: 5,
-};
-
 const getOrderIndex = (title: string): number => {
   const normalized = title.toLowerCase();
-  for (const [key, index] of Object.entries(ORDER)) {
-    if (normalized.includes(key)) return index;
-  }
+  if (normalized.includes('interior')) return 0;
+  if (normalized.includes('exterior') || normalized.includes('landscaping')) return 1;
+  if (normalized.includes('pool') || normalized.includes('fountain') || normalized.includes('swimming')) return 2;
+  if (normalized.includes('play')) return 3;
+  if (normalized.includes('construction')) return 4;
+  if (normalized.includes('maintenance') || normalized.includes('service')) return 5;
   return 999;
 };
 
@@ -69,15 +60,22 @@ export default function Services() {
       try {
         const { data } = await API.get('/services');
         const extracted = data?.data || data;
-        if (Array.isArray(extracted) && extracted.length > 0) {
-          const sorted = [...extracted].sort((a, b) => getOrderIndex(a.title) - getOrderIndex(b.title));
-          setServices(sorted);
-        } else {
-          // Empty DB -> Fallback to static
-          const mapped = mapStaticToDbFormat();
-          mapped.sort((a, b) => getOrderIndex(a.title) - getOrderIndex(b.title));
-          setServices(mapped);
-        }
+        const dbList: Service[] = Array.isArray(extracted) ? extracted : [];
+        const staticList = mapStaticToDbFormat();
+
+        // Check which static categories are missing from dbList
+        const missingStatic = staticList.filter((staticParent) => {
+          const sTitle = staticParent.title.toLowerCase();
+          return !dbList.some((dbParent) => {
+            const dTitle = dbParent.title.toLowerCase();
+            return dTitle.includes(sTitle) || sTitle.includes(dTitle) ||
+                   (sTitle.includes('maintenance') && dTitle.includes('maintenance'));
+          });
+        });
+
+        const combined = [...dbList, ...missingStatic];
+        const sorted = combined.sort((a, b) => getOrderIndex(a.title) - getOrderIndex(b.title));
+        setServices(sorted);
       } catch (err) {
         console.error('Failed to fetch database services, falling back to static config.', err);
         const mapped = mapStaticToDbFormat();
