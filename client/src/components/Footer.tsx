@@ -32,11 +32,11 @@ export default function Footer() {
           <div>
             <h4 className="uppercase tracking-widest font-bold mb-6 text-sm">Services</h4>
             <ul className="space-y-4 font-light text-gray-200">
-              <li><a href="#" className="hover:text-white transition-colors">Constructions</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Interior Design</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Landscape</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Water Bodies</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Playstation</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Constructions</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Interior Design</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Landscape</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Water Bodies</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Playstation</a></li>
             </ul>
           </div>
           
@@ -57,11 +57,20 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-light text-gray-300">
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm font-light text-gray-300">
           <p>&copy; {new Date().getFullYear()} Prosper Design. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="bg-[#2c4366] px-4 py-2 rounded-lg border border-white/15 shadow-md flex items-center hover:border-[#d4af37]/40 transition-all">
+              <img 
+                src="/irisarc-logo.png" 
+                alt="Designed, Developed & Maintained by irisarcstudios" 
+                className="h-12 w-auto object-contain rounded" 
+              />
+            </div>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            </div>
           </div>
         </div>
       </div>
