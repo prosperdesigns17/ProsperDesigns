@@ -63,18 +63,29 @@ export default function Services() {
         const dbList: Service[] = Array.isArray(extracted) ? extracted : [];
         const staticList = mapStaticToDbFormat();
 
-        // Check which static categories are missing from dbList
-        const missingStatic = staticList.filter((staticParent) => {
-          const sTitle = staticParent.title.toLowerCase();
-          return !dbList.some((dbParent) => {
-            const dTitle = dbParent.title.toLowerCase();
-            return dTitle.includes(sTitle) || sTitle.includes(dTitle) ||
-                   (sTitle.includes('maintenance') && dTitle.includes('maintenance'));
-          });
-        });
+        // Deduplicate and merge: prefer DB items, fill missing slots from static
+        const usedSlots = new Set<number>();
+        const finalServices: Service[] = [];
 
-        const combined = [...dbList, ...missingStatic];
-        const sorted = combined.sort((a, b) => getOrderIndex(a.title) - getOrderIndex(b.title));
+        for (const dbItem of dbList) {
+          const slot = getOrderIndex(dbItem.title);
+          if (slot !== 999 && !usedSlots.has(slot)) {
+            usedSlots.add(slot);
+            finalServices.push(dbItem);
+          } else if (slot === 999) {
+            finalServices.push(dbItem);
+          }
+        }
+
+        for (const staticItem of staticList) {
+          const slot = getOrderIndex(staticItem.title);
+          if (slot !== 999 && !usedSlots.has(slot)) {
+            usedSlots.add(slot);
+            finalServices.push(staticItem);
+          }
+        }
+
+        const sorted = finalServices.sort((a, b) => getOrderIndex(a.title) - getOrderIndex(b.title));
         setServices(sorted);
       } catch (err) {
         console.error('Failed to fetch database services, falling back to static config.', err);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import API from '../../api';
+import { servicesConfig } from '../../servicesConfig';
 import type { Service, ChildService } from '../../types';
 
 type AdminLevel = 'parents' | 'children' | 'child-detail';
@@ -79,7 +80,36 @@ export default function ManageServices() {
     try {
       const { data } = await API.get('/services');
       const extracted = data?.data || data;
-      setServices(Array.isArray(extracted) ? extracted : []);
+      let list: Service[] = Array.isArray(extracted) ? extracted : [];
+
+      // Check if Services & Maintenance is in DB, if not, auto-create it
+      const hasMaintenance = list.some((s: Service) => s.title.toLowerCase().includes('maintenance'));
+      if (!hasMaintenance) {
+        try {
+          const staticItem = servicesConfig.find(s => s.title.toLowerCase().includes('maintenance'));
+          if (staticItem) {
+            const childrenForDb = staticItem.subServices.map(sub => ({
+              title: sub.title,
+              coverImage: sub.coverImage,
+              description: sub.description,
+              features: sub.features || [],
+              gallery: sub.gallery.map(img => ({ url: img.image, caption: img.title, description: img.description || '' }))
+            }));
+            const { data: createdRes } = await API.post('/services', {
+              title: staticItem.title,
+              coverImageUrl: staticItem.coverImage,
+              children: childrenForDb
+            });
+            if (createdRes?.data) {
+              list.push(createdRes.data);
+            }
+          }
+        } catch (seedErr) {
+          console.error('Failed to auto-seed Services & Maintenance', seedErr);
+        }
+      }
+
+      setServices(list);
     } catch {
       setError('Failed to load services');
     } finally {
