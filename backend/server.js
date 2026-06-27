@@ -76,26 +76,33 @@ app.use(helmet({
 }));
 app.use(limiter);
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://prosper-designs.vercel.app",
+  "https://www.prosper-designs.vercel.app"
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    const allowed = [
-      "http://localhost:5173",
-      "https://prosper-design.vercel.app"
-    ];
-
     if (!origin) return callback(null, true);
 
     if (
-      allowed.includes(origin) ||
+      allowedOrigins.includes(origin) ||
       origin.endsWith(".vercel.app")
     ) {
       return callback(null, true);
     }
 
-    return callback(new Error("CORS not allowed"));
+    console.log("Blocked Origin:", origin);
+    return callback(new Error("Not allowed by CORS"));
   },
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+app.options("*", cors());
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
