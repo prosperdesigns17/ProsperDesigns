@@ -1,4 +1,4 @@
-const app = require('../app');
+const app = require('../server/app');
 
 module.exports = (req, res) => {
   const origin = req.headers.origin || '*';

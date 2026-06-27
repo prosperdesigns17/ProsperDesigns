@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const envUrl = import.meta.env.VITE_API_URL || 'https://prosper-designs-vqzf-hvtyd3jh4-prosperdesign.vercel.app';
-const cleanUrl = envUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
-const API_BASE_URL = `${cleanUrl}/api`;
+const envUrl = import.meta.env.VITE_API_URL || '';
+const cleanUrl = envUrl ? envUrl.replace(/\/api\/?$/, '').replace(/\/$/, '') : '';
+const API_BASE_URL = cleanUrl ? `${cleanUrl}/api` : '/api';
 
 const API = axios.create({ 
   baseURL: API_BASE_URL,
