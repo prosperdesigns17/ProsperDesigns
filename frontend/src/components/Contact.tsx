@@ -136,14 +136,14 @@ export default function Contact() {
               <div>
                 <h4 className="uppercase tracking-widest text-xs font-bold text-white mb-2" style={{ color: '#FFFFFF' }}>WhatsApp</h4>
                 <a 
-                  href="https://wa.me/919700521522" 
+                  href="https://wa.me/918143947374" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex items-center gap-2 text-xl font-medium text-white hover:text-[#d4af37] transition-colors"
                   style={{ color: '#FFFFFF' }}
                 >
                   <FaWhatsapp className="text-[#d4af37] text-2xl" />
-                  +91 97005 21522
+                  +91 81439 47374
                 </a>
               </div>
               <div>
@@ -159,12 +159,6 @@ export default function Contact() {
                   RAMAVARAPADU,<br />
                   VIJAYAWADA
                 </a>
-              </div>
-              <div>
-                <h4 className="uppercase tracking-widest text-xs font-bold text-white mb-2" style={{ color: '#FFFFFF' }}>Working Hours</h4>
-                <p className="text-xl font-medium text-white leading-relaxed" style={{ color: '#FFFFFF' }}>
-                  Mon - Sat: 9:00 AM - 6:00 PM
-                </p>
               </div>
             </div>
           </div>
