@@ -74,7 +74,8 @@ export default function BookConsultation() {
         name,
         phone,
         email,
-        service: fullServiceSelection,
+        service: projectType,
+        childService: subService,
         message,
         subject: `Consultation Booking: ${fullServiceSelection}`,
       };

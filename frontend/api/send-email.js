@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
 
-  const { name, email, phone, subject, service, message } = req.body ?? {};
+  const { name, email, phone, subject, service, childService, message } = req.body ?? {};
 
   if (!name || !message) {
     return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -35,20 +35,22 @@ export default async function handler(req, res) {
       },
     });
 
-    const isConsultation = Boolean(service);
+    const isConsultation = Boolean(service || childService);
+    const recipientEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
 
     await transporter.sendMail({
       from: `"Prosper Design Website" <${process.env.EMAIL_USER}>`,
-      to:   process.env.EMAIL_USER,
+      to:   recipientEmail,
       subject: isConsultation
-        ? `📋 New Consultation – ${service}`
+        ? `📋 New Consultation – ${service || 'General'}`
         : (subject ? `📩 ${subject}` : '📩 New Contact Form Message'),
       html: isConsultation ? `
         <h2 style="color:#d4af37;font-family:sans-serif">New Consultation Request</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Phone:</strong> ${phone || '-'}</p>
         <p><strong>Email:</strong> ${email || '-'}</p>
-        <p><strong>Service:</strong> ${service}</p>
+        <p><strong>Service:</strong> ${service || '-'}</p>
+        ${childService ? `<p><strong>Sub-Service:</strong> ${childService}</p>` : ''}
         <p><strong>Message:</strong><br>${message}</p>
         <hr/>
         <p style="color:#888;font-size:12px">Sent via Prosper Design website — Vercel Email Function</p>
