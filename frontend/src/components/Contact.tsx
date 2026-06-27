@@ -84,14 +84,19 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-[#2A3F5C] text-white">
+    <section id="contact" className="py-28 md:py-40 bg-[#2A3F5C] text-white">
       <div className="container mx-auto px-6 md:px-12">
         <div className="flex flex-col lg:flex-row gap-16">
           
           {/* Contact Details */}
           <div className="w-full lg:w-1/3 space-y-10">
             <div>
-              <h3 className="text-[#d4af37] uppercase tracking-widest text-sm font-bold mb-4">Contact</h3>
+              <img 
+                src="/logo.png" 
+                alt="Prosper Design Logo" 
+                className="w-44 md:w-52 h-auto object-contain mb-6 rounded-xl shadow-lg border border-white/10" 
+              />
+              <h3 className="text-[#d4af37] uppercase tracking-widest text-sm font-bold mb-3">Contact</h3>
               <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-widest mb-10 text-[#d4af37]">
                 RAM BABU MIRYALA
               </h2>

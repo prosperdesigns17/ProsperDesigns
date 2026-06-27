@@ -32,7 +32,7 @@ export default function Navbar() {
           <img 
             src="/logo.png" 
             alt="Prosper Design" 
-            className="h-12 w-auto object-contain bg-white/90 p-1 rounded" 
+            className="h-14 md:h-16 w-auto object-contain rounded-lg shadow-md" 
             onError={(e) => {
               (e.target as HTMLElement).style.display = 'none';
               const span = document.createElement('span');
