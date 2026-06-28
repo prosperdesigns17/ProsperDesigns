@@ -11,14 +11,22 @@ const uploadToCloudinary = async (localFilePath, folder = 'prosper_design') => {
   try {
     if (!localFilePath) return null;
     
+    console.log(`[Cloudinary Upload] Uploading ${localFilePath} to folder ${folder}...`);
     const result = await cloudinary.uploader.upload(localFilePath, {
       folder: folder,
       resource_type: 'auto'
     });
 
-    // Delete local temporary file
+    console.log(`[Cloudinary Upload Success] URL: ${result.secure_url}`);
+
+    // Delete local temporary file after successful upload
     if (fs.existsSync(localFilePath)) {
-      fs.unlinkSync(localFilePath);
+      try {
+        fs.unlinkSync(localFilePath);
+        console.log(`[Cloudinary Temp Clean] Removed temporary local file: ${localFilePath}`);
+      } catch (unlinkErr) {
+        console.error(`[Cloudinary Temp Clean Error] Could not delete ${localFilePath}:`, unlinkErr);
+      }
     }
 
     return {

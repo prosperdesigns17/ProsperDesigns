@@ -62,13 +62,26 @@ const ensureDBAndSeed = async () => {
 // Fire DB connection asynchronously on cold start
 ensureDBAndSeed();
 
-// Ensure upload directories exist safely
-try {
-  fs.mkdirSync(path.join(__dirname, 'uploads', 'thumbnails'), { recursive: true });
-  fs.mkdirSync(path.join(__dirname, 'uploads', 'videos'), { recursive: true });
-} catch (err) {
-  // Ignore in read-only environments (e.g. Vercel serverless)
-}
+// Ensure upload directories exist safely using absolute paths
+const uploadRoot = path.join(__dirname, 'uploads');
+const requiredUploadFolders = [
+  uploadRoot,
+  path.join(uploadRoot, 'thumbnails'),
+  path.join(uploadRoot, 'videos'),
+  path.join(uploadRoot, 'gallery'),
+  path.join(uploadRoot, 'services'),
+  path.join(uploadRoot, 'projects'),
+  path.join(uploadRoot, 'logos')
+];
+
+requiredUploadFolders.forEach(folder => {
+  try {
+    fs.mkdirSync(folder, { recursive: true });
+  } catch (err) {
+    // Ignore in read-only environments (e.g. Vercel serverless)
+  }
+});
+
 
 const app = express();
 

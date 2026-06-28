@@ -14,9 +14,32 @@ const {
   updateGalleryImage
 } = require('../controllers/serviceController');
 
+const path = require('path');
+const fs = require('fs');
+
+const uploadRoot = path.join(__dirname, '..', 'uploads');
+const serviceDir = path.join(uploadRoot, 'services');
+
+[uploadRoot, serviceDir].forEach(dir => {
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+  } catch (err) {}
+});
+
 const storage = multer.diskStorage({
-  destination(req, file, cb) { cb(null, 'uploads/'); },
-  filename(req, file, cb) { cb(null, Date.now() + '-' + file.originalname); }
+  destination(req, file, cb) {
+    try {
+      fs.mkdirSync(serviceDir, { recursive: true });
+    } catch (err) {}
+    console.log(`[Multer Service Upload] Field: ${file.fieldname}, File: ${file.originalname}, Target: ${serviceDir}`);
+    cb(null, serviceDir);
+  },
+  filename(req, file, cb) {
+    const safeName = file.originalname.replace(/\s+/g, '_');
+    const filename = Date.now() + '-' + safeName;
+    console.log(`[Multer Service Upload] Saving filename: ${filename}`);
+    cb(null, filename);
+  }
 });
 const upload = multer({ storage });
 
