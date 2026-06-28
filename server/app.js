@@ -62,8 +62,9 @@ const ensureDBAndSeed = async () => {
 // Fire DB connection asynchronously on cold start
 ensureDBAndSeed();
 
-// Ensure upload directories exist safely using absolute paths
-const uploadRoot = path.join(__dirname, 'uploads');
+// Ensure upload directories exist safely using OS temp directory for serverless support
+const os = require('os');
+const uploadRoot = path.join(os.tmpdir(), 'pd2_uploads');
 const requiredUploadFolders = [
   uploadRoot,
   path.join(uploadRoot, 'thumbnails'),
@@ -78,7 +79,7 @@ requiredUploadFolders.forEach(folder => {
   try {
     fs.mkdirSync(folder, { recursive: true });
   } catch (err) {
-    // Ignore in read-only environments (e.g. Vercel serverless)
+    // Ignore in read-only environments
   }
 });
 

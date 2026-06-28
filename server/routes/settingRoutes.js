@@ -9,8 +9,9 @@ const {
 
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
-const uploadRoot = path.join(__dirname, '..', 'uploads');
+const uploadRoot = path.join(os.tmpdir(), 'pd2_uploads');
 const logoDir = path.join(uploadRoot, 'logos');
 
 [uploadRoot, logoDir].forEach(dir => {

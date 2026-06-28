@@ -11,8 +11,9 @@ const {
 
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
-const uploadRoot = path.join(__dirname, '..', 'uploads');
+const uploadRoot = path.join(os.tmpdir(), 'pd2_uploads');
 const thumbnailDir = path.join(uploadRoot, 'thumbnails');
 const videoDir = path.join(uploadRoot, 'videos');
 const galleryDir = path.join(uploadRoot, 'gallery');
