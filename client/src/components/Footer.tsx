@@ -60,14 +60,19 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm font-light text-gray-300">
           <p>&copy; {new Date().getFullYear()} Prosper Design. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="bg-[#2c4366] px-4 py-2.5 rounded-xl border border-white/15 shadow-md flex flex-col items-center justify-center gap-1.5 hover:border-[#d4af37]/40 transition-all">
+            <a 
+              href="https://www.instagram.com/irisarc.studio/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="bg-[#2c4366] px-4 py-2.5 rounded-xl border border-white/15 shadow-md flex flex-col items-center justify-center gap-1.5 hover:border-[#d4af37]/40 transition-all cursor-pointer"
+            >
               <img 
                 src="/irisarc-logo.png" 
                 alt="Designed, Developed & Maintained by irisarcstudios" 
                 className="h-10 w-auto object-contain rounded" 
               />
               <span className="text-white text-[11px] font-semibold tracking-wide uppercase opacity-95">built by irisarc.studio</span>
-            </div>
+            </a>
             <div className="flex gap-6">
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

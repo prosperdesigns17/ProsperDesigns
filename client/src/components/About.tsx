@@ -69,6 +69,8 @@ export default function About() {
               <img 
                 src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop" 
                 alt="Luxury Construction" 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>
