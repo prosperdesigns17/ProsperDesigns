@@ -64,35 +64,66 @@ export default function ProjectShowcase() {
   };
 
   const getProjectGallery = (project: Project): string[] => {
-    const gallery = project.galleryImages && project.galleryImages.length > 0 
-      ? project.galleryImages 
+    const rawGallery = project.galleryImages && project.galleryImages.length > 0
+      ? project.galleryImages
       : (project.images || []);
 
-    const coverTargets = [
+    // Build the complete set of cover identifiers to block
+    // Include raw values AND the final resolved cover URL from getProjectCover
+    const coverRawValues = [
       project.coverImage,
       project.thumbnail,
       project.video,
-      getProjectCover(project)
-    ].filter(Boolean).map(u => u!.trim());
+    ].filter((v): v is string => Boolean(v) && typeof v === 'string');
 
-    const normalizedCoverUrls = coverTargets.map(u => normalizeUrl(u));
-    const coverFilenames = coverTargets.map(u => getFilename(u)).filter(Boolean);
+    const resolvedCover = getProjectCover(project); // fully resolved URL
 
-    const filtered = gallery.filter((img) => {
+    // Build normalized sets for fast lookup
+    const coverNormalizedSet = new Set<string>();
+    const coverFilenameSet = new Set<string>();
+
+    // Add all raw cover values (normalized + filename)
+    for (const raw of coverRawValues) {
+      const normRaw = normalizeUrl(raw);
+      if (normRaw) coverNormalizedSet.add(normRaw);
+      const fn = getFilename(raw);
+      if (fn) coverFilenameSet.add(fn);
+    }
+
+    // Add the final resolved cover URL (normalized + filename)
+    if (resolvedCover && !resolvedCover.includes('placeholder-cover')) {
+      const normResolved = normalizeUrl(resolvedCover);
+      if (normResolved) coverNormalizedSet.add(normResolved);
+      const fn = getFilename(resolvedCover);
+      if (fn) coverFilenameSet.add(fn);
+    }
+
+    const filtered = rawGallery.filter((img) => {
       if (!img || typeof img !== 'string') return false;
-      const trimmedImg = img.trim();
-      const normImg = normalizeUrl(trimmedImg);
-      const imgFilename = getFilename(trimmedImg);
+      const trimmed = img.trim();
+      if (!trimmed) return false;
 
-      // Compare exact URL, normalized URL, and filename
-      if (coverTargets.includes(trimmedImg)) return false;
-      if (normalizedCoverUrls.includes(normImg)) return false;
-      if (imgFilename && coverFilenames.includes(imgFilename)) return false;
+      // Check against raw cover values (exact string match)
+      if (coverRawValues.includes(trimmed)) return false;
+
+      // Check normalized URL
+      const normImg = normalizeUrl(trimmed);
+      if (normImg && coverNormalizedSet.has(normImg)) return false;
+
+      // Check resolved URL (gallery item resolved to full URL)
+      const resolvedImg = getMediaUrl(trimmed);
+      const normResolvedImg = normalizeUrl(resolvedImg);
+      if (normResolvedImg && coverNormalizedSet.has(normResolvedImg)) return false;
+
+      // Filename fallback comparison
+      const fn = getFilename(trimmed);
+      if (fn && coverFilenameSet.has(fn)) return false;
 
       return true;
     });
 
-    const resolved = filtered.map(img => getMediaUrl(img)).filter(Boolean);
+    // Resolve all remaining images to full URLs and deduplicate
+    const resolved = filtered.map((img) => getMediaUrl(img)).filter(Boolean);
     return resolved.filter((url, index) => resolved.indexOf(url) === index);
   };
 
