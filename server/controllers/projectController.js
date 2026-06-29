@@ -35,7 +35,8 @@ const getProjects = asyncHandler(async (req, res) => {
   const projects = rawProjects.map((p) => {
     const obj = typeof p.toObject === 'function' ? p.toObject() : p;
     const cover = obj.coverImage || obj.thumbnail || '';
-    const gallery = (obj.galleryImages && obj.galleryImages.length > 0) ? obj.galleryImages : (obj.images || []);
+    const rawGallery = (obj.galleryImages && obj.galleryImages.length > 0) ? obj.galleryImages : (obj.images || []);
+    const gallery = rawGallery.filter(img => img && img !== cover && img !== obj.coverImage && img !== obj.thumbnail);
     return {
       ...obj,
       coverImage: cover,
@@ -50,21 +51,30 @@ const getProjects = asyncHandler(async (req, res) => {
 // @desc    Create a project
 // @route   POST /api/projects
 const createProject = asyncHandler(async (req, res) => {
-  const { title, description, category, featured, visibility, urlImages, location, area, completion, materials } = req.body;
+  const { title, description, category, featured, visibility, thumbnailUrl, coverImageUrl, videoUrl, urlImages, galleryImagesJson, location, area, completion, materials } = req.body;
   
-  let coverImage = '';
-  if (req.files && (req.files['coverImage'] || req.files['thumbnail'])) {
+  let coverImage = thumbnailUrl?.trim() || coverImageUrl?.trim() || '';
+  if (!coverImage && req.files && (req.files['coverImage'] || req.files['thumbnail'])) {
     const fileObj = (req.files['coverImage'] && req.files['coverImage'][0]) || (req.files['thumbnail'] && req.files['thumbnail'][0]);
     coverImage = await uploadImage(fileObj.path, 'prosper_design/projects/thumbnails');
   }
     
-  let video = '';
-  if (req.files && req.files['video']) {
+  let video = videoUrl?.trim() || '';
+  if (!video && req.files && req.files['video']) {
     const localPath = req.files['video'][0].path;
     video = await uploadVideo(localPath, 'prosper_design/projects/videos');
   }
   
-  let galleryImages = urlImages ? JSON.parse(urlImages) : [];
+  let rawGallery = [];
+  const jsonInput = galleryImagesJson || urlImages;
+  if (jsonInput) {
+    try {
+      rawGallery = typeof jsonInput === 'string' ? JSON.parse(jsonInput) : jsonInput;
+    } catch (e) {
+      if (typeof jsonInput === 'string') rawGallery = jsonInput.split('\n').map(u => u.trim()).filter(Boolean);
+    }
+  }
+  let galleryImages = Array.isArray(rawGallery) ? [...rawGallery] : [];
   if (req.files && (req.files['galleryImages'] || req.files['images'])) {
     const uploadedFiles = [...(req.files['galleryImages'] || []), ...(req.files['images'] || [])];
     for (const file of uploadedFiles) {
@@ -102,7 +112,7 @@ const updateProject = asyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, message: 'Project not found' });
   }
 
-  const { title, description, category, featured, visibility, urlImages, galleryImagesJson, location, area, completion, materials } = req.body;
+  const { title, description, category, featured, visibility, thumbnailUrl, coverImageUrl, videoUrl, urlImages, galleryImagesJson, location, area, completion, materials } = req.body;
   
   if (title !== undefined) project.title = title;
   if (description !== undefined) project.description = description;
@@ -117,13 +127,20 @@ const updateProject = asyncHandler(async (req, res) => {
   
   let currentGallery = project.galleryImages && project.galleryImages.length > 0 ? [...project.galleryImages] : [...(project.images || [])];
 
-  if (galleryImagesJson) {
-    currentGallery = JSON.parse(galleryImagesJson);
-  } else if (urlImages) {
-    currentGallery = JSON.parse(urlImages);
+  const jsonInput = galleryImagesJson || urlImages;
+  if (jsonInput) {
+    try {
+      currentGallery = typeof jsonInput === 'string' ? JSON.parse(jsonInput) : jsonInput;
+    } catch (e) {
+      if (typeof jsonInput === 'string') currentGallery = jsonInput.split('\n').map(u => u.trim()).filter(Boolean);
+    }
   }
 
-  if (req.files && (req.files['coverImage'] || req.files['thumbnail'])) {
+  const passedCover = thumbnailUrl?.trim() || coverImageUrl?.trim();
+  if (passedCover) {
+    project.coverImage = passedCover;
+    project.thumbnail = passedCover;
+  } else if (req.files && (req.files['coverImage'] || req.files['thumbnail'])) {
     const fileObj = (req.files['coverImage'] && req.files['coverImage'][0]) || (req.files['thumbnail'] && req.files['thumbnail'][0]);
     const secureUrl = await uploadImage(fileObj.path, 'prosper_design/projects/thumbnails');
     if (secureUrl) {
@@ -132,7 +149,10 @@ const updateProject = asyncHandler(async (req, res) => {
     }
   }
   
-  if (req.files && req.files['video']) {
+  const passedVideo = videoUrl?.trim();
+  if (passedVideo) {
+    project.video = passedVideo;
+  } else if (req.files && req.files['video']) {
     const localPath = req.files['video'][0].path;
     const secureUrl = await uploadVideo(localPath, 'prosper_design/projects/videos');
     if (secureUrl) project.video = secureUrl;

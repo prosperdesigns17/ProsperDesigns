@@ -50,11 +50,50 @@ export default function ProjectShowcase() {
     return '/placeholder-cover.jpg';
   };
 
+  const getFilename = (url?: string): string => {
+    if (!url) return '';
+    const clean = url.trim().split('?')[0].split('#')[0];
+    return clean.split('/').pop()?.toLowerCase() || '';
+  };
+
+  const normalizeUrl = (url?: string): string => {
+    if (!url) return '';
+    const trimmed = url.trim();
+    const resolved = trimmed.startsWith('http') ? trimmed : `${getBackendUrl()}/${trimmed}`;
+    return resolved.toLowerCase().replace(/\/$/, '');
+  };
+
   const getProjectGallery = (project: Project): string[] => {
     const gallery = project.galleryImages && project.galleryImages.length > 0 
       ? project.galleryImages 
       : (project.images || []);
-    return gallery.map(img => getMediaUrl(img)).filter(Boolean);
+
+    const coverTargets = [
+      project.coverImage,
+      project.thumbnail,
+      project.video,
+      getProjectCover(project)
+    ].filter(Boolean).map(u => u!.trim());
+
+    const normalizedCoverUrls = coverTargets.map(u => normalizeUrl(u));
+    const coverFilenames = coverTargets.map(u => getFilename(u)).filter(Boolean);
+
+    const filtered = gallery.filter((img) => {
+      if (!img || typeof img !== 'string') return false;
+      const trimmedImg = img.trim();
+      const normImg = normalizeUrl(trimmedImg);
+      const imgFilename = getFilename(trimmedImg);
+
+      // Compare exact URL, normalized URL, and filename
+      if (coverTargets.includes(trimmedImg)) return false;
+      if (normalizedCoverUrls.includes(normImg)) return false;
+      if (imgFilename && coverFilenames.includes(imgFilename)) return false;
+
+      return true;
+    });
+
+    const resolved = filtered.map(img => getMediaUrl(img)).filter(Boolean);
+    return resolved.filter((url, index) => resolved.indexOf(url) === index);
   };
 
   const activeGalleryImages = selectedProject ? getProjectGallery(selectedProject) : [];
@@ -333,7 +372,7 @@ export default function ProjectShowcase() {
 
                 {/* TOP MEDIA SECTION: 70% Video Player / 30% Cover Thumbnail on Desktop */}
                 <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] gap-8 items-stretch">
-                  {/* Left Side (70%): Project Video Player */}
+                  {/* Left Side (70%): Project Video Player or First Gallery Image */}
                   <div className="bg-[#1D2B42] rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex flex-col justify-center min-h-[340px] md:min-h-[440px] relative">
                     {selectedProject.video ? (
                       <video
@@ -345,19 +384,34 @@ export default function ProjectShowcase() {
                         <source src={getMediaUrl(selectedProject.video)} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
-                    ) : (
-                      <div className="relative w-full h-full min-h-[360px] overflow-hidden flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-[#1D2B42] to-[#2A3F5C]">
+                    ) : activeGalleryImages.length > 0 ? (
+                      <div 
+                        onClick={() => setLightboxIndex(0)}
+                        className="relative w-full h-full min-h-[360px] md:min-h-[440px] overflow-hidden cursor-pointer group rounded-3xl bg-black/40"
+                      >
                         <img
-                          src={getProjectCover(selectedProject)}
-                          alt={selectedProject.title}
-                          className="absolute inset-0 w-full h-full object-cover filter blur-md opacity-30"
+                          src={activeGalleryImages[0]}
+                          alt={`${selectedProject.title} Main Gallery Feature`}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#1D2B42] via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                        <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between z-10">
+                          <span className="text-xs font-bold uppercase tracking-widest text-[#d4af37] bg-[#1D2B42]/90 backdrop-blur-md px-4 py-2 rounded-full border border-[#d4af37]/40 shadow-lg">
+                            Gallery Image 1
+                          </span>
+                          <span className="text-xs text-white bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/20">
+                            <FiMaximize2 size={14} /> Expand View
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative w-full h-full min-h-[360px] overflow-hidden flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-[#1D2B42] to-[#2A3F5C] rounded-3xl">
                         <div className="relative z-10 max-w-md space-y-3">
                           <div className="w-16 h-16 bg-[#d4af37]/20 rounded-full flex items-center justify-center mx-auto text-[#d4af37] border border-[#d4af37]/30">
-                            <FiVideo size={30} />
+                            <FiImage size={30} />
                           </div>
-                          <h4 className="text-xl font-bold text-white uppercase tracking-wide">Cinematic Showcase</h4>
-                          <p className="text-gray-300 text-sm font-light">Explore high-resolution photography below in our dedicated project gallery.</p>
+                          <h4 className="text-xl font-bold text-white uppercase tracking-wide">Architectural Showcase</h4>
+                          <p className="text-gray-300 text-sm font-light">Explore custom design and crafted space solutions for this project entry.</p>
                         </div>
                       </div>
                     )}

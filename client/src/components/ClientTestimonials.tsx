@@ -27,6 +27,10 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   { clientName: 'Himaja Constructions', service: 'Construction',               rating: 5, message: 'We have partnered on multiple projects. Reliable workmanship and excellent coordination throughout every engagement.' },
   { clientName: 'Sresta Constructions', service: 'Construction',               rating: 5, message: 'The construction support and finishing quality were consistently outstanding. A true professional team.' },
   { clientName: 'End Avenue Serene',    service: 'Exterior & Landscaping',     rating: 5, message: 'The landscape design added tremendous value to our residential project. Highly recommended for any premium estate.' },
+  { clientName: 'Vertex Prime',         service: 'Interior Designing',         rating: 5, message: 'Outstanding craftsmanship and interior space planning. The team delivered our commercial suite beyond expectations.' },
+  { clientName: 'Aparna Luxury',        service: 'EPDM Flooring',              rating: 5, message: 'Flawless safety flooring execution for our sports courts. Vibrant colors and superior build quality.' },
+  { clientName: 'My Home Estates',      service: 'Swimming Pools & Fountains', rating: 5, message: 'The interactive aquatic features and illumination designs brought our resort landscape to life.' },
+  { clientName: 'Incor Infrastructure', service: 'Exterior & Landscaping',     rating: 5, message: 'Top-tier urban landscape execution. Their structural masonry and horticulture integration are unmatched.' },
 ];
 
 /* ── Star renderer ──────────────────────────────────── */

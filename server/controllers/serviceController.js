@@ -17,9 +17,9 @@ const getServices = asyncHandler(async (req, res) => {
 // @desc    Create a service (parent)
 // @route   POST /api/services
 const createService = asyncHandler(async (req, res) => {
-  const { title, coverImageUrl, children } = req.body;
-  let coverImage = coverImageUrl || '';
-  if (req.file) {
+  const { title, coverImageUrl, imageUrl, children } = req.body;
+  let coverImage = coverImageUrl?.trim() || imageUrl?.trim() || '';
+  if (!coverImage && req.file) {
     const secureUrl = await uploadImage(req.file.path, 'prosper_design/services');
     if (secureUrl) coverImage = secureUrl;
   }
@@ -35,10 +35,13 @@ const createService = asyncHandler(async (req, res) => {
 const updateService = asyncHandler(async (req, res) => {
   const service = await Service.findById(req.params.id);
   if (!service) return res.status(404).json({ success: false, message: 'Service not found' });
-  const { title, coverImageUrl, children } = req.body;
+  const { title, coverImageUrl, imageUrl, children } = req.body;
   if (title !== undefined) service.title = title;
-  if (coverImageUrl !== undefined) service.coverImage = coverImageUrl;
-  if (req.file) {
+  
+  const passedCover = coverImageUrl?.trim() || imageUrl?.trim();
+  if (passedCover) {
+    service.coverImage = passedCover;
+  } else if (req.file) {
     const secureUrl = await uploadImage(req.file.path, 'prosper_design/services');
     if (secureUrl) service.coverImage = secureUrl;
   }
@@ -65,12 +68,15 @@ const updateChildService = asyncHandler(async (req, res) => {
   if (isNaN(idx) || idx < 0 || idx >= service.children.length)
     return res.status(400).json({ success: false, message: 'Invalid child index' });
   const child = service.children[idx];
-  const { title, description, features, coverImageUrl } = req.body;
+  const { title, description, features, coverImageUrl, imageUrl } = req.body;
   if (title !== undefined) child.title = title;
   if (description !== undefined) child.description = description;
   if (features !== undefined) child.features = typeof features === 'string' ? JSON.parse(features) : features;
-  if (coverImageUrl !== undefined) child.coverImage = coverImageUrl;
-  if (req.file) {
+  
+  const passedCover = coverImageUrl?.trim() || imageUrl?.trim();
+  if (passedCover) {
+    child.coverImage = passedCover;
+  } else if (req.file) {
     const secureUrl = await uploadImage(req.file.path, 'prosper_design/services/children');
     if (secureUrl) child.coverImage = secureUrl;
   }
@@ -103,6 +109,28 @@ const addGalleryImages = asyncHandler(async (req, res) => {
   const child = service.children[idx];
   const files = req.files || (req.file ? [req.file] : []);
   const uploaded = [];
+  
+  // Process passed URLs
+  const { urls, galleryUrls, imageUrl } = req.body;
+  let passedUrls = [];
+  const urlInput = urls || galleryUrls || imageUrl;
+  if (urlInput) {
+    if (Array.isArray(urlInput)) {
+      passedUrls = urlInput;
+    } else if (typeof urlInput === 'string') {
+      try {
+        const parsed = JSON.parse(urlInput);
+        if (Array.isArray(parsed)) passedUrls = parsed;
+        else passedUrls = [urlInput];
+      } catch (e) {
+        passedUrls = urlInput.split('\n').map(u => u.trim()).filter(Boolean);
+      }
+    }
+  }
+  for (const url of passedUrls) {
+    if (url) uploaded.push({ url, caption: '', description: '' });
+  }
+
   for (const file of files) {
     const url = await uploadImage(file.path, 'prosper_design/services/gallery');
     if (url) uploaded.push({ url, caption: file.originalname.replace(/\.[^.]+$/, ''), description: '' });

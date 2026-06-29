@@ -53,7 +53,9 @@ export default function ManageServices() {
   const [childFeatures, setChildFeatures] = useState<string[]>([]);
   const [featureInput, setFeatureInput] = useState('');
   const [childCoverFile, setChildCoverFile] = useState<File | null>(null);
+  const [childCoverUrl, setChildCoverUrl] = useState('');
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+  const [galleryUrlInput, setGalleryUrlInput] = useState('');
   const [uploadingGallery, setUploadingGallery] = useState(false);
 
   // Image editing modal
@@ -136,7 +138,9 @@ export default function ManageServices() {
         setChildDescription(child.description || '');
         setChildFeatures(child.features || []);
         setChildCoverFile(null);
+        setChildCoverUrl(child.coverImage || '');
         setGalleryFiles([]);
+        setGalleryUrlInput('');
       }
     }
   }, [activeParent, activeChildIdx]);
@@ -245,6 +249,7 @@ export default function ManageServices() {
       fd.append('title', childTitle);
       fd.append('description', childDescription);
       fd.append('features', JSON.stringify(childFeatures));
+      if (childCoverUrl.trim()) fd.append('coverImageUrl', childCoverUrl.trim());
       if (childCoverFile) fd.append('coverImage', childCoverFile);
       await API.put(`/services/${activeParent._id}/children/${activeChildIdx}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       showSuccess('Saved successfully');
@@ -260,15 +265,18 @@ export default function ManageServices() {
   // ── GALLERY ──────────────────────────────────────────────────
 
   const handleGalleryUpload = async () => {
-    if (!activeParent || activeChildIdx === null || galleryFiles.length === 0) return;
+    if (!activeParent || activeChildIdx === null) return;
+    if (galleryFiles.length === 0 && !galleryUrlInput.trim()) return;
     setUploadingGallery(true);
     setError('');
     try {
       const fd = new FormData();
       galleryFiles.forEach(f => fd.append('gallery', f));
+      if (galleryUrlInput.trim()) fd.append('urls', galleryUrlInput.trim());
       await API.post(`/services/${activeParent._id}/children/${activeChildIdx}/gallery`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
-      showSuccess(`${galleryFiles.length} image(s) uploaded`);
+      showSuccess(`Gallery updated successfully`);
       setGalleryFiles([]);
+      setGalleryUrlInput('');
       if (galleryInputRef.current) galleryInputRef.current.value = '';
       await fetchServices();
     } catch (err: any) {
@@ -631,13 +639,25 @@ export default function ManageServices() {
                 {activeChild.coverImage && (
                   <img src={activeChild.coverImage} alt="Cover" className="w-full h-32 object-cover rounded-lg border border-white/10 mb-2" />
                 )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={e => setChildCoverFile(e.target.files?.[0] || null)}
-                  className="w-full bg-[#334155] border border-white/20 rounded-lg px-3 py-2 text-gray-400 text-xs"
-                />
-                {childCoverFile && <p className="text-green-400 text-xs mt-1">✓ {childCoverFile.name}</p>}
+                <div className="space-y-2">
+                  <label className="text-gray-500 text-[11px] block">Choose File (Local Storage)</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={e => setChildCoverFile(e.target.files?.[0] || null)}
+                    className="w-full bg-[#334155] border border-white/20 rounded-lg px-3 py-2 text-gray-400 text-xs"
+                  />
+                  {childCoverFile && <p className="text-green-400 text-xs mt-1">✓ {childCoverFile.name}</p>}
+                  <p className="text-center text-xs text-[#d4af37] font-bold my-1">OR</p>
+                  <label className="text-gray-500 text-[11px] block">Image URL (Cloudinary)</label>
+                  <input
+                    type="text"
+                    placeholder="https://res.cloudinary.com/..."
+                    value={childCoverUrl}
+                    onChange={e => setChildCoverUrl(e.target.value)}
+                    className="w-full bg-[#334155] border border-white/20 rounded-lg px-3 py-2 text-white text-xs focus:border-[#d4af37] focus:outline-none placeholder-gray-500"
+                  />
+                </div>
                 <p className="text-gray-500 text-[10px] mt-1">If cover image is empty, the first image inside the gallery will be used automatically.</p>
               </div>
 
@@ -659,25 +679,39 @@ export default function ManageServices() {
               </h4>
 
               {/* Upload */}
-              <div className="space-y-2">
-                <label className="text-gray-400 text-xs uppercase tracking-wider block font-semibold text-[#d4af37]">Upload Gallery Images</label>
-                <input
-                  ref={galleryInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={e => setGalleryFiles(Array.from(e.target.files || []))}
-                  className="w-full bg-[#334155] border border-white/20 rounded-lg px-3 py-2 text-gray-400 text-xs"
-                />
-                {galleryFiles.length > 0 && (
-                  <div className="flex items-center justify-between">
-                    <p className="text-green-400 text-xs">✓ {galleryFiles.length} file(s) selected</p>
+              <div className="space-y-3">
+                <label className="text-gray-400 text-xs uppercase tracking-wider block font-semibold text-[#d4af37]">Add Gallery Images</label>
+                <div>
+                  <label className="text-gray-500 text-[11px] block mb-1">Choose Files (Local Storage)</label>
+                  <input
+                    ref={galleryInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={e => setGalleryFiles(Array.from(e.target.files || []))}
+                    className="w-full bg-[#334155] border border-white/20 rounded-lg px-3 py-2 text-gray-400 text-xs"
+                  />
+                </div>
+                <p className="text-center text-xs text-[#d4af37] font-bold my-1">OR</p>
+                <div>
+                  <label className="text-gray-500 text-[11px] block mb-1">Image URL(s) (Cloudinary - one per line or single URL)</label>
+                  <textarea
+                    rows={2}
+                    placeholder="https://res.cloudinary.com/photo1.jpg"
+                    value={galleryUrlInput}
+                    onChange={e => setGalleryUrlInput(e.target.value)}
+                    className="w-full bg-[#334155] border border-white/20 rounded-lg px-3 py-2 text-white text-xs focus:border-[#d4af37] focus:outline-none resize-none placeholder-gray-500"
+                  />
+                </div>
+                {(galleryFiles.length > 0 || galleryUrlInput.trim().length > 0) && (
+                  <div className="flex items-center justify-between pt-1">
+                    <p className="text-green-400 text-xs">✓ Ready to add</p>
                     <button
                       onClick={handleGalleryUpload}
                       disabled={uploadingGallery}
                       className="bg-[#d4af37] text-black font-bold px-4 py-1.5 rounded-lg text-xs hover:bg-white transition-colors disabled:opacity-50"
                     >
-                      {uploadingGallery ? 'Uploading...' : `Upload ${galleryFiles.length} Image${galleryFiles.length !== 1 ? 's' : ''}`}
+                      {uploadingGallery ? 'Saving...' : 'Add Gallery Images'}
                     </button>
                   </div>
                 )}

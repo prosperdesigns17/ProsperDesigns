@@ -13,6 +13,8 @@ export default function ManageProjects() {
     title: '',
     description: '',
     category: 'Landscape',
+    thumbnailUrl: '',
+    videoUrl: '',
     urlImages: '',
     location: '',
     area: '',
@@ -24,6 +26,7 @@ export default function ManageProjects() {
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+  const [galleryUrlsList, setGalleryUrlsList] = useState<string[]>(['']);
   const [existingGallery, setExistingGallery] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -50,13 +53,15 @@ export default function ManageProjects() {
   const openAdd = () => {
     setEditingProject(null);
     setFormData({ 
-      title: '', description: '', category: 'Landscape', urlImages: '', 
+      title: '', description: '', category: 'Landscape', 
+      thumbnailUrl: '', videoUrl: '', urlImages: '', 
       location: '', area: '', completion: '', materials: '', 
       featured: false, visibility: true 
     });
     setThumbnailFile(null);
     setVideoFile(null);
     setGalleryFiles([]);
+    setGalleryUrlsList(['']);
     setExistingGallery([]);
     setShowForm(true);
   };
@@ -70,6 +75,8 @@ export default function ManageProjects() {
       title: p.title, 
       description: p.description || '', 
       category: p.category, 
+      thumbnailUrl: (p.thumbnail && p.thumbnail.startsWith('http')) ? p.thumbnail : (p.coverImage && p.coverImage.startsWith('http')) ? p.coverImage : '', 
+      videoUrl: (p.video && p.video.startsWith('http')) ? p.video : '', 
       urlImages: '', 
       location: p.location || '',
       area: p.area || '',
@@ -81,6 +88,7 @@ export default function ManageProjects() {
     setThumbnailFile(null);
     setVideoFile(null);
     setGalleryFiles([]);
+    setGalleryUrlsList(['']);
     setExistingGallery(initialGallery);
     setShowForm(true);
   };
@@ -99,6 +107,22 @@ export default function ManageProjects() {
     setExistingGallery(prev => prev.filter((_, i) => i !== index));
   };
 
+  const updateGalleryUrlInput = (index: number, val: string) => {
+    setGalleryUrlsList(prev => {
+      const copy = [...prev];
+      copy[index] = val;
+      return copy;
+    });
+  };
+
+  const addGalleryUrlInput = () => {
+    setGalleryUrlsList(prev => [...prev, '']);
+  };
+
+  const removeGalleryUrlInput = (index: number) => {
+    setGalleryUrlsList(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -113,8 +137,17 @@ export default function ManageProjects() {
       fd.append('completion', formData.completion);
       fd.append('materials', formData.materials);
       
-      const urlList = formData.urlImages.split('\n').map(u => u.trim()).filter(Boolean);
-      const combinedUrls = [...existingGallery, ...urlList];
+      if (formData.thumbnailUrl?.trim()) {
+        fd.append('thumbnailUrl', formData.thumbnailUrl.trim());
+        fd.append('coverImageUrl', formData.thumbnailUrl.trim());
+      }
+      if (formData.videoUrl?.trim()) {
+        fd.append('videoUrl', formData.videoUrl.trim());
+      }
+
+      const textareaUrls = formData.urlImages.split('\n').map(u => u.trim()).filter(Boolean);
+      const listUrls = galleryUrlsList.map(u => u.trim()).filter(Boolean);
+      const combinedUrls = [...existingGallery, ...textareaUrls, ...listUrls];
       fd.append('galleryImagesJson', JSON.stringify(combinedUrls));
       fd.append('urlImages', JSON.stringify(combinedUrls));
       
@@ -209,10 +242,17 @@ export default function ManageProjects() {
                   </div>
                 )}
                 <div>
-                  <label className="text-gray-400 text-xs block mb-1">Upload New Cover Image from Local Storage</label>
+                  <label className="text-gray-400 text-xs block mb-1">Choose File (Local Storage)</label>
                   <input type="file" accept="image/*" onChange={e => setThumbnailFile(e.target.files?.[0] || null)}
                     className="w-full bg-[#2A4365] border border-white/20 rounded-lg px-3 py-2 text-gray-300 text-sm" />
                   {thumbnailFile && <p className="text-green-400 text-xs mt-1">✓ {thumbnailFile.name}</p>}
+                </div>
+                <p className="text-center text-xs text-[#d4af37] font-bold my-1">OR</p>
+                <div>
+                  <label className="text-gray-400 text-xs block mb-1">Thumbnail URL (Cloudinary)</label>
+                  <input type="text" value={formData.thumbnailUrl} onChange={e => setFormData(p => ({...p, thumbnailUrl: e.target.value}))}
+                    placeholder="https://res.cloudinary.com/..."
+                    className="w-full bg-[#2A4365] border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:border-[#d4af37] focus:outline-none placeholder-gray-500" />
                 </div>
               </div>
 
@@ -221,23 +261,30 @@ export default function ManageProjects() {
                 <p className="text-sm font-bold text-white">Project Video</p>
                 {editingProject && editingProject.video && (
                   <div className="mb-2">
-                    <p className="text-gray-400 text-xs mb-1">Current Video Path:</p>
+                    <p className="text-gray-400 text-xs mb-1">Current Video Path / URL:</p>
                     <span className="text-xs text-[#d4af37] block truncate">{editingProject.video}</span>
                   </div>
                 )}
                 <div>
-                  <label className="text-gray-400 text-xs block mb-1">Upload Video File from Local Storage</label>
+                  <label className="text-gray-400 text-xs block mb-1">Choose File (Local Storage)</label>
                   <input type="file" accept="video/*" onChange={e => setVideoFile(e.target.files?.[0] || null)}
                     className="w-full bg-[#2A4365] border border-white/20 rounded-lg px-3 py-2 text-gray-300 text-sm" />
                   {videoFile && <p className="text-green-400 text-xs mt-1">✓ {videoFile.name}</p>}
                 </div>
+                <p className="text-center text-xs text-[#d4af37] font-bold my-1">OR</p>
+                <div>
+                  <label className="text-gray-400 text-xs block mb-1">Video URL (Cloudinary)</label>
+                  <input type="text" value={formData.videoUrl} onChange={e => setFormData(p => ({...p, videoUrl: e.target.value}))}
+                    placeholder="https://res.cloudinary.com/..."
+                    className="w-full bg-[#2A4365] border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:border-[#d4af37] focus:outline-none placeholder-gray-500" />
+                </div>
               </div>
 
               {/* Multiple Gallery Images Upload */}
-              <div className="border border-white/10 rounded-xl p-4 space-y-3 bg-[#2A4365]/30">
+              <div className="border border-white/10 rounded-xl p-4 space-y-4 bg-[#2A4365]/30">
                 <div className="flex justify-between items-center">
                   <p className="text-sm font-bold text-white">Project Gallery Images</p>
-                  <span className="text-xs text-gray-400">Upload multiple photos</span>
+                  <span className="text-xs text-gray-400">Upload files or add Cloudinary URLs</span>
                 </div>
 
                 {/* Existing Gallery Images Preview & Delete */}
@@ -277,7 +324,7 @@ export default function ManageProjects() {
                 )}
 
                 <div>
-                  <label className="text-gray-400 text-xs block mb-1">Select Multiple Image Files</label>
+                  <label className="text-gray-400 text-xs block mb-1">Choose Files (Local Storage)</label>
                   <input
                     type="file"
                     multiple
@@ -287,10 +334,37 @@ export default function ManageProjects() {
                   />
                 </div>
 
-                <div className="pt-2">
-                  <label className="text-gray-400 text-xs block mb-1">Or Paste Image URLs (One per line)</label>
+                <p className="text-center text-xs text-[#d4af37] font-bold my-1">OR</p>
+
+                <div className="space-y-2">
+                  <label className="text-gray-400 text-xs block mb-1 font-semibold text-white">Gallery Image URLs (Cloudinary)</label>
+                  {galleryUrlsList.map((url, index) => (
+                    <div key={index} className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={url}
+                        onChange={(e) => updateGalleryUrlInput(index, e.target.value)}
+                        placeholder="https://res.cloudinary.com/..."
+                        className="flex-1 bg-[#2A4365] border border-white/20 rounded-lg px-3 py-1.5 text-white text-xs focus:border-[#d4af37] focus:outline-none"
+                      />
+                      {galleryUrlsList.length > 1 && (
+                        <button type="button" onClick={() => removeGalleryUrlInput(index)} className="text-red-400 hover:text-red-300 text-xs px-2 font-bold">✕</button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={addGalleryUrlInput}
+                    className="text-xs text-[#d4af37] border border-[#d4af37]/40 px-3 py-1 rounded-md bg-[#d4af37]/10 hover:bg-[#d4af37]/20 transition-colors font-bold"
+                  >
+                    + Add URL
+                  </button>
+                </div>
+
+                <div className="pt-2 border-t border-white/10">
+                  <label className="text-gray-400 text-xs block mb-1">Or Paste Multiple Image URLs (One per line)</label>
                   <textarea rows={2} value={formData.urlImages} onChange={e => setFormData(p => ({...p, urlImages: e.target.value}))}
-                    placeholder="https://cloudinary.com/photo1.jpg&#10;https://cloudinary.com/photo2.jpg"
+                    placeholder="https://res.cloudinary.com/photo1.jpg&#10;https://res.cloudinary.com/photo2.jpg"
                     className="w-full bg-[#2A4365] border border-white/20 rounded-lg px-3 py-2 text-white text-xs focus:border-[#d4af37] focus:outline-none resize-none placeholder-gray-500" />
                 </div>
               </div>
