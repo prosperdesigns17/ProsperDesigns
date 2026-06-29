@@ -8,6 +8,7 @@ try {
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const fs = require('fs');
@@ -86,6 +87,29 @@ requiredUploadFolders.forEach(folder => {
 
 const app = express();
 
+// Enable Gzip Compression & ETags for SEO & Page Speed
+app.use(compression());
+app.set('etag', 'strong');
+
+// Cache & Crawler Prerender Middleware
+app.use((req, res, next) => {
+  // Static assets or GET API caching headers
+  if (req.method === 'GET') {
+    if (req.path.startsWith('/uploads') || req.path.match(/\.(jpg|jpeg|png|gif|webp|avif|mp4|svg|ico|css|js)$/)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=60');
+    }
+  }
+
+  // Crawler / Prerender Detection
+  const userAgent = req.headers['user-agent'] || '';
+  if (/bot|googlebot|bingbot|crawler|spider|slurp|facebookexternalhit|twitterbot/i.test(userAgent)) {
+    res.setHeader('X-Prerender-Support', 'enabled');
+  }
+  next();
+});
+
 // Trust reverse proxy for Vercel / Cloudflare rate-limiting
 app.set('trust proxy', 1);
 
@@ -124,6 +148,50 @@ app.use(morgan('dev'));
 
 // Serve Static Uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// SEO Routes: Robots.txt & Sitemap.xml
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send(`User-agent: *
+Disallow: /admin
+Disallow: /api
+Allow: /
+
+Sitemap: https://prosperdesigns.in/sitemap.xml`);
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://prosperdesigns.in/</loc>
+    <lastmod>2026-06-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://prosperdesigns.in/#about</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prosperdesigns.in/#services</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://prosperdesigns.in/#projects</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://prosperdesigns.in/#contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>`);
+});
 
 // Health & Info Routes
 app.get(['/', '/api'], (req, res) => {

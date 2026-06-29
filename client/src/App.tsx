@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { Helmet } from 'react-helmet-async';
+import SEO from './components/SEO';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import HeroSequence from './components/HeroSequence';
@@ -24,25 +24,7 @@ const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 function PublicSite() {
   return (
     <div id="home" className="bg-[#415C84] min-h-screen text-white font-sans antialiased overflow-x-hidden">
-      <Helmet>
-        <title>Prosper Designs | Premium Landscape & Interior Design</title>
-        <meta
-          name="description"
-          content="Prosper Designs offers premium landscape, interior design, swimming pools, fountains, EPDM flooring and construction services in Vijayawada."
-        />
-        <meta
-          name="keywords"
-          content="Landscape Design, Interior Design, Swimming Pool, Fountains, EPDM Flooring, Vijayawada, Andhra Pradesh, Construction"
-        />
-        <link rel="canonical" href="https://prosperdesigns.in/" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Prosper Designs | Premium Landscape & Interior Design" />
-        <meta
-          property="og:description"
-          content="Luxury Landscape & Interior Design Company in Vijayawada, Andhra Pradesh."
-        />
-        <meta property="og:image" content="/logo.png" />
-      </Helmet>
+      <SEO />
       <Navbar />
       <HeroSequence />
       <About />
