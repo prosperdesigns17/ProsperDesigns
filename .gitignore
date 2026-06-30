@@ -1,10 +1,6 @@
 # Dependency directories
 node_modules/
 
-# Production builds
-dist/
-build/
-
 # Local env files
 .env
 .env.local
@@ -23,6 +19,4 @@ yarn-error.log*
 # Local uploads and temporary files
 uploads/
 backend/uploads/
-frontend/dist/
-frontend/node_modules/
-backend/node_modules/
+server/uploads/
