@@ -5,20 +5,29 @@ import SEO from './components/SEO';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import HeroSequence from './components/HeroSequence';
-import About from './components/About';
-import Services from './components/Services';
-import ProjectShowcase from './components/ProjectShowcase';
-import BookConsultation from './components/BookConsultation';
-import WhyChooseUs from './components/WhyChooseUs';
-import OurClients from './components/OurClients';
-import ClientTestimonials from './components/ClientTestimonials';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import Footer from './components/Footer';
+
+// Dynamic / Code-split Public Scroll Sections
+const About = lazy(() => import('./components/About'));
+const Services = lazy(() => import('./components/Services'));
+const ProjectShowcase = lazy(() => import('./components/ProjectShowcase'));
+const BookConsultation = lazy(() => import('./components/BookConsultation'));
+const WhyChooseUs = lazy(() => import('./components/WhyChooseUs'));
+const OurClients = lazy(() => import('./components/OurClients'));
+const ClientTestimonials = lazy(() => import('./components/ClientTestimonials'));
+const Contact = lazy(() => import('./components/Contact'));
 
 // Dynamic / Code-split Admin Pages
 const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+
+// Helper loader animation for individual lazy sections
+const SectionLoader = () => (
+  <div className="py-20 flex items-center justify-center text-white">
+    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#d4af37]"></div>
+  </div>
+);
 
 // Public Layout
 function PublicSite() {
@@ -27,19 +36,22 @@ function PublicSite() {
       <SEO />
       <Navbar />
       <HeroSequence />
-      <About />
-      <Services />
-      <ProjectShowcase />
-      <BookConsultation />
-      <WhyChooseUs />
-      <OurClients />
-      <ClientTestimonials />
-      <Contact />
+      <Suspense fallback={<SectionLoader />}>
+        <About />
+        <Services />
+        <ProjectShowcase />
+        <BookConsultation />
+        <WhyChooseUs />
+        <OurClients />
+        <ClientTestimonials />
+        <Contact />
+      </Suspense>
       <WhatsAppButton />
       <Footer />
     </div>
   );
 }
+
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-[#415C84] flex items-center justify-center text-white">
