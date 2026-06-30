@@ -1,3 +1,12 @@
+// Suppress and customize deprecation warnings from third-party libraries (e.g. url.parse)
+process.on("warning", (warning) => {
+  if (warning.name === "DeprecationWarning") {
+    console.warn("Deprecation Warning:", warning.message);
+    return;
+  }
+  console.warn(warning);
+});
+
 const dns = require('dns');
 try {
   dns.setDefaultResultOrder('ipv4first');
@@ -11,6 +20,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
@@ -25,6 +35,30 @@ if (fs.existsSync(localEnvPath)) {
   dotenv.config();
 }
 
+// ─── Environment Variable Validation ─────────────────────────────────────────
+// Warn on startup if recommended env vars are missing — does NOT crash the
+// server so existing fallbacks still work, but makes misconfiguration visible.
+const RECOMMENDED_ENV_VARS = [
+  'MONGODB_URI',
+  'JWT_SECRET',
+  'CLOUDINARY_CLOUD_NAME',
+  'CLOUDINARY_API_KEY',
+  'CLOUDINARY_API_SECRET',
+];
+const USING_FALLBACKS = [];
+RECOMMENDED_ENV_VARS.forEach((key) => {
+  if (!process.env[key]) {
+    USING_FALLBACKS.push(key);
+  }
+});
+if (USING_FALLBACKS.length > 0) {
+  console.warn(
+    `[Config] ⚠️  The following environment variables are not set and will use fallbacks: ${USING_FALLBACKS.join(', ')}`
+  );
+  console.warn('[Config] Set these in your .env.local or deployment environment variables for production security.');
+}
+
+// ─── Database & Seed ──────────────────────────────────────────────────────────
 // Connect to Database & Seed Clients helper
 const Client = require('./models/Client');
 let seeded = false;
@@ -144,7 +178,9 @@ app.options("*", cors());
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
-app.use(morgan('dev'));
+// Use 'combined' log format in production (includes remote addr, user-agent)
+// and 'dev' format in development for readable coloured output
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // Serve Static Uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -203,10 +239,20 @@ app.get(['/', '/api'], (req, res) => {
 });
 
 app.get(['/health', '/api/health'], (req, res) => {
+  const mongoStates = { 0: 'disconnected', 1: 'connected', 2: 'connecting', 3: 'disconnecting' };
+  const mongoState = mongoose.connection.readyState;
   res.json({
     success: true,
-    message: "Health OK",
-    data: { status: "ok" }
+    message: 'Health OK',
+    data: {
+      status: 'ok',
+      uptime: Math.floor(process.uptime()),
+      nodeVersion: process.version,
+      environment: process.env.NODE_ENV || 'development',
+      mongodb: mongoStates[mongoState] || 'unknown',
+      cloudinary: process.env.CLOUDINARY_CLOUD_NAME ? 'configured' : 'not configured',
+      timestamp: new Date().toISOString(),
+    }
   });
 });
 

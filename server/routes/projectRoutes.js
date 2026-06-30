@@ -48,8 +48,23 @@ const storage = multer.diskStorage({
   }
 });
 
+// Only allow image and video MIME types — reject everything else early
+const fileFilter = (req, file, cb) => {
+  const allowedImages = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml'];
+  const allowedVideos = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'];
+  const allowed = [...allowedImages, ...allowedVideos];
+  if (allowed.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error(`Unsupported file type: ${file.mimetype}. Only images and videos are allowed.`));
+  }
+};
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100 MB max per file
+});
 
 router.get('/', getProjects);
 

@@ -1,13 +1,20 @@
 const errorHandler = (err, req, res, next) => {
-  console.error(`❌ [Error] ${err.message}`, err.stack);
+  const statusCode = err.statusCode || err.status || 500;
+  const isProduction = process.env.NODE_ENV === 'production';
 
-  const statusCode = err.statusCode || 500;
-  
+  // Structured server-side log — always log full details on the server
+  console.error(`[Error] ${req.method} ${req.path} → ${statusCode} ${err.message}`);
+  if (!isProduction) {
+    console.error(err.stack);
+  }
+
+  // Client response — never expose stack traces in production
   res.status(statusCode).json({
     success: false,
     message: err.message || 'Internal Server Error',
-    data: process.env.NODE_ENV === 'development' ? err.stack : null,
+    data: isProduction ? null : (err.stack || null),
   });
 };
 
 module.exports = errorHandler;
+
