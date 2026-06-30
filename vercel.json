@@ -2,6 +2,9 @@
   "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist",
   "installCommand": "npm install",
+  "env": {
+    "NODE_NO_WARNINGS": "1"
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -41,3 +44,4 @@
     }
   ]
 }
+
