@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Homepage -->
   <url>
     <loc>https://prosperdesigns.in/</loc>
-    <lastmod>2026-06-29</lastmod>
+    <lastmod>2026-07-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Interior Design Page -->
   <url>
-    <loc>https://prosperdesigns.in/#about</loc>
+    <loc>https://prosperdesigns.in/interior-design-vijayawada</loc>
+    <lastmod>2026-07-05</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prosperdesigns.in/#services</loc>
-    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Landscape Design Page -->
   <url>
-    <loc>https://prosperdesigns.in/#projects</loc>
-    <changefreq>daily</changefreq>
+    <loc>https://prosperdesigns.in/landscape-design-vijayawada</loc>
+    <lastmod>2026-07-05</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Swimming Pool Design Page -->
   <url>
-    <loc>https://prosperdesigns.in/#contact</loc>
+    <loc>https://prosperdesigns.in/swimming-pool-design-vijayawada</loc>
+    <lastmod>2026-07-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Water Fountain Design Page -->
+  <url>
+    <loc>https://prosperdesigns.in/water-fountain-design-vijayawada</loc>
+    <lastmod>2026-07-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- EPDM Flooring Page -->
+  <url>
+    <loc>https://prosperdesigns.in/epdm-flooring-vijayawada</loc>
+    <lastmod>2026-07-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Playground Equipment Page -->
+  <url>
+    <loc>https://prosperdesigns.in/playground-equipment-vijayawada</loc>
+    <lastmod>2026-07-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://prosperdesigns.in/contact</loc>
+    <lastmod>2026-07-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- Service Deep Links -->
-  <url>
-    <loc>https://prosperdesigns.in/?service=interior-design</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prosperdesigns.in/?service=landscape-design</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prosperdesigns.in/?service=swimming-pools</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prosperdesigns.in/?service=water-fountains</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prosperdesigns.in/?service=epdm-flooring</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prosperdesigns.in/?service=play-stations</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
 </urlset>
